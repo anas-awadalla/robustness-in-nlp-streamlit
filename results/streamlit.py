@@ -18,7 +18,7 @@ dataset = st.sidebar.selectbox(
      'squadshifts_amazon', 'RACE', 'DROP', 'TextbookQA', 'BioASQ', 'RelationExtraction')
 )
 
-df = pd.read_csv('results/extractive_question_answering.csv')
+df = pd.read_csv('extractive_question_answering.csv')
 
 
 """
@@ -31,7 +31,8 @@ num_iterations = int(st.number_input(
 
 selected_file = None
 def bootstrap(model, dataset_name, n_samples, num_iterations):
-    for file in glob.glob(f'../results/*.json'):
+    for file in glob.glob('*.json'):
+        print(file)
         file_name = os.path.basename(file).split('.')[0].lower()
         if file_name.find(model.split('/')[-1].lower()) != -1 and file_name.find(dataset_name.lower()) != -1:
             selected_file = file
