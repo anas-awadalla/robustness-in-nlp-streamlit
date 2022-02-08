@@ -29,6 +29,7 @@ n_samples = int(st.number_input("n For Bootstrap", min_value=1, value=100))
 num_iterations = int(st.number_input(
     "N For Bootstrap", min_value=1, value=100))
 
+selected_file = None
 def bootstrap(model, dataset_name, n_samples, num_iterations):
     for file in glob.glob(f'/results/*.json'):
         file_name = os.path.basename(file).split('.')[0].lower()
