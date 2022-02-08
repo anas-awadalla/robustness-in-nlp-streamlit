@@ -30,7 +30,7 @@ num_iterations = int(st.number_input(
     "N For Bootstrap", min_value=1, value=100))
 
 def bootstrap(model, dataset_name, n_samples, num_iterations):
-    for file in glob.glob(f'/home/mitchnw/ssd/anas/robustness-in-nlp/src/**/*.json'):
+    for file in glob.glob(f'/results/*.json'):
         file_name = os.path.basename(file).split('.')[0].lower()
         if file_name.find(model.split('/')[-1].lower()) != -1 and file_name.find(dataset_name.lower()) != -1:
             selected_file = file
