@@ -59,7 +59,7 @@ df = pd.read_csv(os.path.join(results_path.absolute(),
                  'extractive_question_answering.csv'))
 
 
-# @st.experimental_memo(show_spinner=False)
+@st.experimental_memo(show_spinner=True)
 def bootstrap(model, dataset_name, n_samples, num_iterations):
     for file in results_path.glob(f'*.json'):
         file_name = os.path.basename(file).split('.')[0].lower()
