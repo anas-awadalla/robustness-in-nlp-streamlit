@@ -3,7 +3,6 @@ import json
 from pathlib import Path
 import numpy as np
 import pandas as pd
-import scipy
 import streamlit as st
 import plotly.express as px
 from sklearn.utils import resample
