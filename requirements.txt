@@ -5,4 +5,4 @@ plotly
 sklearn
 scipy
 transformers[torch]
-statsmodels
+
