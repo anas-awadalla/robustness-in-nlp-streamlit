@@ -4,5 +4,5 @@ pandas
 plotly
 sklearn
 scipy
-transformers
+transformers[torch]
 statsmodels
