@@ -23,7 +23,6 @@ Ideally use the following values for n depending on the dataset:
 'squadshifts_amazon': 9885,
 'RACE': 674, 
 'DROP': 1503, 
-'TextbookQA': 1503,
 'BioASQ': 1504,
 'RelationExtraction': 2948
 
@@ -36,21 +35,26 @@ dataset_to_size = {
     'squadshifts_amazon': 9885,
     'RACE': 674, 
     'DROP': 1503, 
-    'TextbookQA': 1503,
+    # 'TextbookQA': 1503,
     'BioASQ': 1504,
     'RelationExtraction': 2948
 }
 
 dataset = st.sidebar.selectbox(
-    'Dataset',
-    ('squadshifts_nyt', 'squadshifts_reddit', 'squadshifts_new_wiki',
-     'squadshifts_amazon', 'RACE', 'DROP', 'TextbookQA', 'BioASQ', 'RelationExtraction'))
+    'Dataset (Y-Axis)',
+    ('squadshifts_nyt', 'squad' 'squadshifts_reddit', 'squadshifts_new_wiki',
+     'squadshifts_amazon', 'RACE', 'DROP', 'BioASQ', 'RelationExtraction'))
+
+id_dataset = st.sidebar.selectbox(
+    'Dataset (X-Axis)',
+    ('squad', 'squadshifts_nyt', 'squadshifts_reddit', 'squadshifts_new_wiki',
+     'squadshifts_amazon', 'RACE', 'DROP', 'BioASQ', 'RelationExtraction'))
 
 
-n_samples_ood = int(st.number_input("n For OOD Bootstrap", min_value=1, value=dataset_to_size[dataset]))
-num_iterations_ood = int(st.number_input( "N For OOD Bootstrap", min_value=1, value=1000))
-n_samples_iid = int(st.number_input("n For IID Bootstrap", min_value=1, value=dataset_to_size["squad"]))
-num_iterations_iid = int(st.number_input( "N For IID Bootstrap", min_value=1, value=1000))
+n_samples_ood = int(st.number_input("n For OOD Bootstrap (Y-Axis)", min_value=1, value=dataset_to_size[dataset]))
+num_iterations_ood = int(st.number_input( "N For OOD Bootstrap (Y-Axis)", min_value=1, value=1000))
+n_samples_iid = int(st.number_input("n For ID Bootstrap (X-Axis)", min_value=1, value=dataset_to_size[id_dataset]))
+num_iterations_iid = int(st.number_input( "N For ID Bootstrap (X-Axis)", min_value=1, value=1000))
     
 
 results_path = Path(".") / "results"
@@ -102,10 +106,10 @@ for model in df['model_name'].unique():
 iid_bootstrap_f1 = defaultdict()
 for model in df['model_name'].unique():
     iid_bootstrap_f1[model] = bootstrap(
-        model, "squad", n_samples_iid, num_iterations_iid)
+        model, id_dataset, n_samples_iid, num_iterations_iid)
 
 ood_df = df.loc[df['dataset_name'] == dataset].drop(columns=['dataset_name'])
-iid_df = df.loc[df['dataset_name'] == "squad"].drop(columns=['dataset_name'])
+iid_df = df.loc[df['dataset_name'] == id_dataset].drop(columns=['dataset_name'])
 
 ood_df['ood_bootstrap_f1'] = ood_df['model_name'].apply(
     lambda x: ood_bootstrap_f1[x][0])
@@ -121,7 +125,7 @@ iid_df['e_minus_iid'] = iid_df['model_name'].apply(
 iid_df['e_plus_iid'] = iid_df['model_name'].apply(
     lambda x: abs(iid_bootstrap_f1[x][1][1] - iid_bootstrap_f1[x][0]))
 
-ood_df = ood_df.drop(columns=['zero_shot'])
+ood_df = ood_df.drop(columns=['zero_shot', 'model_family', 'exact_match'])
 iid_df = iid_df.rename(columns={"f1": "iid_f1"})
 ood_df = ood_df.rename(columns={"f1": "ood_f1"})
 
@@ -129,9 +133,10 @@ dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
     'model_name')], axis=1, join='inner').reset_index()
 dataset_df['zero_shot'] = dataset_df['zero_shot'].astype('bool')
 
-fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="zero_shot",
-                 hover_data=["model_name"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
-                 error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between squad and {dataset}")
+fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
+                 hover_data=["model_name", "zero_shot"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
+                 error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {id_dataset} and {dataset}",
+                 labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
 
 # Add trendline for non zero-shot models
 z = np.polyfit(dataset_df[dataset_df['zero_shot'] == False]['iid_f1'],
@@ -153,3 +158,4 @@ fig.add_traces(go.Scatter(x=dataset_df[dataset_df['zero_shot'] == True]
 
 
 st.plotly_chart(fig, use_container_width=True)
+st.dataframe(dataset_df)
