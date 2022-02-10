@@ -122,32 +122,34 @@ iid_df['e_plus_iid'] = iid_df['model_name'].apply(
     lambda x: abs(iid_bootstrap_f1[x][1][1] - iid_bootstrap_f1[x][0]))
 
 ood_df = ood_df.drop(columns=['zero_shot'])
+iid_df = iid_df.rename(columns={"f1": "iid_f1"})
+ood_df = ood_df.rename(columns={"f1": "ood_f1"})
 
 dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
     'model_name')], axis=1, join='inner').reset_index()
 dataset_df['zero_shot'] = dataset_df['zero_shot'].astype('bool')
 
-fig = px.scatter(dataset_df, x="iid_bootstrap_f1", y="ood_bootstrap_f1", color="zero_shot",
+fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="zero_shot",
                  hover_data=["model_name"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
                  error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between squad and {dataset}")
 
 # Add trendline for non zero-shot models
-z = np.polyfit(dataset_df[dataset_df['zero_shot'] == False]['iid_bootstrap_f1'],
-               dataset_df[dataset_df['zero_shot'] == False]['ood_bootstrap_f1'], 1)
-y_fit = np.poly1d(z)(dataset_df[dataset_df['zero_shot'] == False]['iid_bootstrap_f1'])
+z = np.polyfit(dataset_df[dataset_df['zero_shot'] == False]['iid_f1'],
+               dataset_df[dataset_df['zero_shot'] == False]['ood_f1'], 1)
+y_fit = np.poly1d(z)(dataset_df[dataset_df['zero_shot'] == False]['iid_f1'])
 
-line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['zero_shot'] == False]['ood_bootstrap_f1'] ,y_fit):0.3f}"
+line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['zero_shot'] == False]['ood_f1'] ,y_fit):0.3f}"
 fig.add_traces(go.Scatter(x=dataset_df[dataset_df['zero_shot'] == False]
-               ['iid_bootstrap_f1'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
+               ['iid_f1'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
 
 # Add trendline for zero-shot models
-z = np.polyfit(dataset_df[dataset_df['zero_shot'] == True]['iid_bootstrap_f1'],
-               dataset_df[dataset_df['zero_shot'] == True]['ood_bootstrap_f1'], 1)
-y_fit = np.poly1d(z)(dataset_df[dataset_df['zero_shot'] == True]['iid_bootstrap_f1'])
+z = np.polyfit(dataset_df[dataset_df['zero_shot'] == True]['iid_f1'],
+               dataset_df[dataset_df['zero_shot'] == True]['ood_f1'], 1)
+y_fit = np.poly1d(z)(dataset_df[dataset_df['zero_shot'] == True]['iid_f1'])
 
-line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['zero_shot'] == True]['ood_bootstrap_f1'] ,y_fit):0.3f}"
+line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['zero_shot'] == True]['ood_f1'] ,y_fit):0.3f}"
 fig.add_traces(go.Scatter(x=dataset_df[dataset_df['zero_shot'] == True]
-               ['iid_bootstrap_f1'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
+               ['iid_f1'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
 
 
 st.plotly_chart(fig, use_container_width=True)
