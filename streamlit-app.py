@@ -42,7 +42,7 @@ dataset_to_size = {
 
 dataset = st.sidebar.selectbox(
     'Dataset (Y-Axis)',
-    ('squadshifts_nyt', 'squad' 'squadshifts_reddit', 'squadshifts_new_wiki',
+    ('squadshifts_nyt', 'squad', 'squadshifts_reddit', 'squadshifts_new_wiki',
      'squadshifts_amazon', 'RACE', 'DROP', 'BioASQ', 'RelationExtraction'))
 
 id_dataset = st.sidebar.selectbox(
