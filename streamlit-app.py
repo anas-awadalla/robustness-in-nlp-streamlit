@@ -162,7 +162,8 @@ fig.add_shape(type='line',
                 y0=0,
                 x1=100,
                 y1=100,
-                line=dict(color='Red',),
+                line=dict(color='Blue',),
+                line_dash="dash",
                 xref='x',
                 yref='y')
 
