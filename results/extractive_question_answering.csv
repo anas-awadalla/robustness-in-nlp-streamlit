@@ -478,3 +478,13 @@ anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-42,RelationEx
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-42,TextbookQA,2.584605726066869,1.1310711909514304,16,bert
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-42,BioASQ,7.306331804651642,4.122340425531915,16,bert
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-42,DROP,5.167279556876999,3.659347970725216,16,bert
+google/t5-large-lm-adapt_shot_1_seed_1,squad,19.87263162641853,0.1892147587511826,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,squadshifts_nyt,18.746863872811005,0.6060606060606061,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,squadshifts_amazon,16.54941055222469,0.4552352048558422,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,squadshifts_reddit,17.065585323396217,1.1629093134754667,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,squadshifts_new_wiki,21.61083719281998,0.3653313177122701,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,RACE,4.960099573308872,0.14836795252225518,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,RelationExtraction,18.722573994283113,1.0854816824966078,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,TextbookQA,3.190634422954948,0.0665335994677312,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,BioASQ,8.584270001998497,0.06648936170212766,1,t5
+google/t5-large-lm-adapt_shot_1_seed_1,DROP,10.55263020947756,0.0665335994677312,1,t5
