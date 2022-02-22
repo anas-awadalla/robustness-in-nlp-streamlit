@@ -1,4 +1,4 @@
-model_name,dataset_name,f1,exact_match,zero_shot,model_family
+model_name,dataset_name,f1,exact_match,k_shot,model_family
 csarron/roberta-large-squad-v1,squad,93.48212694240105,86.95364238410596,-1,roberta
 csarron/roberta-large-squad-v1,squadshifts_nyt,90.97690719062045,81.74863387978142,-1,roberta
 csarron/roberta-large-squad-v1,squadshifts_amazon,86.10670296527034,72.20030349013658,-1,roberta
