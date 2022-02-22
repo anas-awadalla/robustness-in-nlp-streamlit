@@ -154,8 +154,8 @@ y_fit = np.poly1d(z)(dataset_df[dataset_df['zero_shot'] == True]['iid_f1'])
 
 line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['zero_shot'] == True]['ood_f1'] ,y_fit):0.3f}"
 fig.add_traces(go.Scatter(x=dataset_df[dataset_df['zero_shot'] == True]
-               ['iid_f1'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
+               ['iid_f1'], y=y_fit, name='K-Shot Fit:'+line_equation, mode='lines'))
 
-
+dataset_df = dataset_df.rename(columns={"zero_shot": "k_shot"})
 st.plotly_chart(fig, use_container_width=True)
 st.dataframe(dataset_df)
