@@ -174,7 +174,7 @@ fig.add_shape(type='line',
                 yref='y')
 
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
-dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1": "ood_bootstrap_f1"])
+dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1", "ood_bootstrap_f1"])
 dataset_df = dataset_df.rename(columns={"e_minus_iid": "e_minus_id"})
 dataset_df = dataset_df.rename(columns={"e_plus_iid": "e_plus_id"})
 
