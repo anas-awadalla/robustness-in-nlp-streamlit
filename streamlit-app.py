@@ -13,9 +13,7 @@ import plotly.graph_objects as go
 
 
 """
-Select the dataset to visualize from the sidebar. For bootstrap use n to set the number of datapoints to sample with replacement at each trial. Use N to set the number of trials.
-
-Ideally use the following values for n depending on the dataset:
+The following datasets are available along with thier sizes:
 'squad': 10570,
 'squadshifts_nyt': 10065,
 'squadshifts_reddit': 9803,
@@ -25,7 +23,6 @@ Ideally use the following values for n depending on the dataset:
 'DROP': 1503, 
 'BioASQ': 1504,
 'RelationExtraction': 2948
-
 """
 dataset_to_size = {
     'squad': 10570,
@@ -51,11 +48,10 @@ id_dataset = st.sidebar.selectbox(
      'squadshifts_amazon', 'RACE', 'DROP', 'BioASQ', 'RelationExtraction'))
 
 
-n_samples_ood = int(st.number_input("n For OOD Bootstrap (Y-Axis)", min_value=1, value=dataset_to_size[dataset]))
-num_iterations_ood = int(st.number_input( "N For OOD Bootstrap (Y-Axis)", min_value=1, value=1000))
-n_samples_iid = int(st.number_input("n For ID Bootstrap (X-Axis)", min_value=1, value=dataset_to_size[id_dataset]))
-num_iterations_iid = int(st.number_input( "N For ID Bootstrap (X-Axis)", min_value=1, value=1000))
-    
+n_samples_ood = dataset_to_size[dataset]
+num_iterations_ood = 1000
+n_samples_iid = dataset_to_size[id_dataset]
+num_iterations_iid = 1000
 
 results_path = Path(".") / "results"
 
