@@ -147,11 +147,6 @@ ood_df = ood_df.rename(columns={"f1": "ood_f1"})
 dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
     'model_name')], axis=1, join='inner').reset_index()
 
-fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
-                 hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
-                 error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {id_dataset} and {dataset}",
-                 labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
-
 if hide_finetuned:
     dataset_df = dataset_df[dataset_df['type'] != 'finetuned']
     
@@ -163,6 +158,11 @@ if hide_few_shot:
     
 if hide_icl:
     dataset_df = dataset_df[dataset_df['type'] != 'icl']
+    
+fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
+                 hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
+                 error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {id_dataset} and {dataset}",
+                 labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
 
 if not hide_finetuned:
     # Add trendline for finetuned models
