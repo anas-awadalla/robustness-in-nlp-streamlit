@@ -62,12 +62,12 @@ id_dataset = st.sidebar.selectbox(
 if dataset == "DuoRC.ParaphraseRC":
     pandas_dataset = "DuoRC(ParaphraseRC)"
 else:
-    pandas_dataset = "DuoRC.ParaphraseRC"
+    pandas_dataset = dataset
 
 if id_dataset == "DuoRC.ParaphraseRC":
     pandas_id_dataset = "DuoRC(ParaphraseRC)"
 else:
-    pandas_id_dataset = "DuoRC.ParaphraseRC"
+    pandas_id_dataset = id_dataset
 
 scaling = st.sidebar.selectbox("Graph Scaling", ['Linear', 'Logit', 'Probit'])
 
