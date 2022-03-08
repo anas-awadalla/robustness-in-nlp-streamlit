@@ -215,8 +215,8 @@ fig.add_shape(type='line',
                 yref='y')
 
 if logit_scaling:
-    fig.update_xaxes(title_text=f"F1 Score Performance on {id_dataset} (Logit Scaling)", type="logit")
-    fig.update_yaxes(title_text=f"F1 Score Performance on {dataset} (Logit Scaling)", type="logit")
+    fig.update_xaxes(title_text=f"F1 Score Performance on {id_dataset} (Logit Scaling)", type="log", range=[0,2])
+    fig.update_yaxes(title_text=f"F1 Score Performance on {dataset} (Logit Scaling)", type="log", range=[0,2])
 
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
 dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1", "ood_bootstrap_f1"])
