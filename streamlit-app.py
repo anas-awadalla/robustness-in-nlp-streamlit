@@ -264,75 +264,80 @@ else:
         except:
             raise Exception(f"{x_range[0]}{x_range[1]}{y_range[0]}{y_range[1]}")
         
-        zeroshot_xs = dataset_df[dataset_df["type"] == "zeroshot"]["iid_f1"]
-        zeroshot_ys = dataset_df[dataset_df["type"] == "zeroshot"]["ood_f1"]
-        
-        # Add zero-shot
-        ax.scatter(transform(zeroshot_xs), transform(zeroshot_ys),
-            label=f"Zeroshot Models", marker='*', s=200, alpha=0.8, c='C4',
-        )
-        
-        ### Zero-shot linear fit
-        sorted_pts = sorted(zip(zeroshot_xs, zeroshot_ys), key=lambda x: x[0])
-        zeroshot_xs, zeroshot_ys = zip(*sorted_pts)
-        z_zeroshot = np.polyfit(transform(zeroshot_xs), transform(zeroshot_ys), 1)
-        y_linear_zeroshot = np.poly1d(z_zeroshot)(transform(zeroshot_xs))
+        if not hide_zeroshot:
+            zeroshot_xs = dataset_df[dataset_df["type"] == "zeroshot"]["iid_f1"]
+            zeroshot_ys = dataset_df[dataset_df["type"] == "zeroshot"]["ood_f1"]
 
-        ax.plot(transform(zeroshot_xs), y_linear_zeroshot, "y-", label="Zeroshot Fit"+ f" $y={z_zeroshot[0]:0.3f}\;x{z_zeroshot[1]:+0.3f}$\n$R^2 = {r2_score(transform(zeroshot_ys),y_linear_zeroshot):0.3f}$")
+            # Add zero-shot
+            ax.scatter(transform(zeroshot_xs), transform(zeroshot_ys),
+                label=f"Zeroshot Models", marker='*', s=200, alpha=0.8, c='C4',
+            )
 
-        finetuned_xs = dataset_df[dataset_df["type"] == "finetuned"]["iid_f1"]
-        finetuned_ys = dataset_df[dataset_df["type"] == "finetuned"]["ood_f1"]
-        
-        # Add fine-tuned
-        ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-            label=f"Finetuned Models", marker='D', s=100, alpha=0.8, c='C1',
-        )
-            
-        ### Fine-tuned linear fit
-        sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
-        finetuned_xs, finetuned_ys = zip(*sorted_pts)
-        z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
-        y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+            ### Zero-shot linear fit
+            sorted_pts = sorted(zip(zeroshot_xs, zeroshot_ys), key=lambda x: x[0])
+            zeroshot_xs, zeroshot_ys = zip(*sorted_pts)
+            z_zeroshot = np.polyfit(transform(zeroshot_xs), transform(zeroshot_ys), 1)
+            y_linear_zeroshot = np.poly1d(z_zeroshot)(transform(zeroshot_xs))
 
-        ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="Finetuned Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
-        
-        finetuned_xs = dataset_df[dataset_df["type"] == "icl"]["iid_f1"]
-        finetuned_ys = dataset_df[dataset_df["type"] == "icl"]["ood_f1"]
-        
-        # Add ICL
-        ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-            label=f"Finetuned Models", marker='D', s=100, alpha=0.8, c='C1',
-        )
-            
-        ### Fine-tuned linear fit
-        sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
-        finetuned_xs, finetuned_ys = zip(*sorted_pts)
-        z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
-        y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+            ax.plot(transform(zeroshot_xs), y_linear_zeroshot, "y-", label="Zeroshot Fit"+ f" $y={z_zeroshot[0]:0.3f}\;x{z_zeroshot[1]:+0.3f}$\n$R^2 = {r2_score(transform(zeroshot_ys),y_linear_zeroshot):0.3f}$")
+           
+        if not hide_finetuned:
+            finetuned_xs = dataset_df[dataset_df["type"] == "finetuned"]["iid_f1"]
+            finetuned_ys = dataset_df[dataset_df["type"] == "finetuned"]["ood_f1"]
 
-        ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="ICL Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
-        
-        finetuned_xs = dataset_df[dataset_df["type"] == "fewshot"]["iid_f1"]
-        finetuned_ys = dataset_df[dataset_df["type"] == "fewshot"]["ood_f1"]
-        
-        # Add Fewshot
-        ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-            label=f"Finetuned Models", marker='.', s=100, alpha=0.8, c='C1',
-        )
-            
-        ### Fewshot linear fit
-        sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
-        finetuned_xs, finetuned_ys = zip(*sorted_pts)
-        z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
-        y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+            # Add fine-tuned
+            ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
+                label=f"Finetuned Models", marker='D', s=100, alpha=0.8, c='C1',
+            )
 
-        ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
+            ### Fine-tuned linear fit
+            sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
+            finetuned_xs, finetuned_ys = zip(*sorted_pts)
+            z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
+            y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+
+            ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="Finetuned Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
+        
+        if not hide_icl:
+            finetuned_xs = dataset_df[dataset_df["type"] == "icl"]["iid_f1"]
+            finetuned_ys = dataset_df[dataset_df["type"] == "icl"]["ood_f1"]
+
+            # Add ICL
+            ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
+                label=f"ICL Models", marker='D', s=100, alpha=0.8, c='C2',
+            )
+
+            ### Fine-tuned linear fit
+            sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
+            finetuned_xs, finetuned_ys = zip(*sorted_pts)
+            z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
+            y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+
+            ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="ICL Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
+        
+        if not hide_fewshot:
+            finetuned_xs = dataset_df[dataset_df["type"] == "fewshot"]["iid_f1"]
+            finetuned_ys = dataset_df[dataset_df["type"] == "fewshot"]["ood_f1"]
+
+            # Add Fewshot
+            ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
+                label=f"Fewshot Models", marker='*', s=100, alpha=0.8, c='C3',
+            )
+
+            ### Fewshot linear fit
+            sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
+            finetuned_xs, finetuned_ys = zip(*sorted_pts)
+            z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
+            y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+
+            ax.plot(transform(finetuned_xs), y_linear_finetuned, "b-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         ### y=x line
         ax.plot(min([ax.get_xlim(), ax.get_ylim()]), max([ax.get_xlim(), ax.get_ylim()]), '--', label="y=x")
         
-        ax.legend(loc='best', prop={'size': 8})
-
+        ax.legend(loc='best', prop={'size': 4})
+        
+        plt.xticks(fontsize=6)
         plt.title(f"Performance on {dataset} vs {id_dataset}")
         plt.xlabel(f"F1 Scores on {id_dataset}")
         plt.ylabel(f"F1 Scores on {dataset}")
