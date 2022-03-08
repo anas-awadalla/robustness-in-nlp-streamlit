@@ -147,6 +147,23 @@ ood_df = ood_df.rename(columns={"f1": "ood_f1"})
 dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
     'model_name')], axis=1, join='inner').reset_index()
 
+fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
+                 hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
+                 error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {id_dataset} and {dataset}",
+                 labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
+
+if hide_finetuned:
+    dataset_df = dataset_df[dataset_df['type'] != 'finetuned']
+    
+if hide_zero_shot:
+    dataset_df = dataset_df[dataset_df['type'] != 'zeroshot']
+    
+if hide_few_shot:
+    dataset_df = dataset_df[dataset_df['type'] != 'fewshot']
+    
+if hide_icl:
+    dataset_df = dataset_df[dataset_df['type'] != 'icl']
+
 if not hide_finetuned:
     # Add trendline for finetuned models
     z = np.polyfit(dataset_df[dataset_df['type'] == 'finetuned']['iid_f1'],
@@ -156,8 +173,6 @@ if not hide_finetuned:
     line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'finetuned']['ood_f1'] ,y_fit):0.3f}"
     fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'finetuned']
                    ['iid_f1'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
-else:
-    dataset_df = dataset_df[dataset_df['type'] != 'finetuned']
 
 if not hide_zero_shot:
     # Add trendline for zero-shot models
@@ -168,8 +183,6 @@ if not hide_zero_shot:
     line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'zeroshot']['ood_f1'] ,y_fit):0.3f}"
     fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'zeroshot']
                    ['iid_f1'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
-else:
-    dataset_df = dataset_df[dataset_df['type'] != 'zeroshot']
 
 if not hide_few_shot:
     # Add trendline for few-shot models
@@ -180,9 +193,6 @@ if not hide_few_shot:
     line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'fewshot']['ood_f1'] ,y_fit):0.3f}"
     fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'fewshot']
                    ['iid_f1'], y=y_fit, name='Few-Shot Fit:'+line_equation, mode='lines'))
-else:
-    dataset_df = dataset_df[dataset_df['type'] != 'fewshot']
-
 
 if not hide_icl:
     # Add trendline for icl models
@@ -193,14 +203,6 @@ if not hide_icl:
     line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'icl']['ood_f1'] ,y_fit):0.3f}"
     fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'icl']
                    ['iid_f1'], y=y_fit, name='ICL Fit:'+line_equation, mode='lines'))
-else:
-    dataset_df = dataset_df[dataset_df['type'] != 'icl']
-    
-fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
-                 hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
-                 error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {id_dataset} and {dataset}",
-                 labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
-
 
 fig.add_shape(type='line',
                 x0=0,
