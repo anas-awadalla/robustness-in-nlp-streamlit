@@ -115,18 +115,16 @@ def bootstrap(model, dataset_name, n_samples, num_iterations):
 
 
 ood_bootstrap_f1 = defaultdict()
-for model in df['model_name'].unique():
-    output = bootstrap(
-        model, dataset, n_samples_ood, num_iterations_ood)
-    if output:
-        ood_bootstrap_f1[model] = output
-
 iid_bootstrap_f1 = defaultdict()
 for model in df['model_name'].unique():
-    output = bootstrap(
+    ood_output = bootstrap(
+        model, dataset, n_samples_ood, num_iterations_ood)
+    id_output = bootstrap(
         model, id_dataset, n_samples_iid, num_iterations_ood)
-    if output:
-        iid_bootstrap_f1[model] = output
+    if ood_output and id_output:
+        ood_bootstrap_f1[model] = ood_output
+        iid_bootstrap_f1[model] = id_output
+        df = df[df['model_name'] != model]
 
 ood_df = df.loc[df['dataset_name'] == dataset].drop(columns=['dataset_name'])
 iid_df = df.loc[df['dataset_name'] == id_dataset].drop(columns=['dataset_name'])
