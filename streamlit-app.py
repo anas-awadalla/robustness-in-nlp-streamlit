@@ -264,7 +264,7 @@ else:
         except:
             raise Exception(f"{x_range[0]}{x_range[1]}{y_range[0]}{y_range[1]}")
         
-        if not hide_zeroshot:
+        if not hide_zero_shot:
             zeroshot_xs = dataset_df[dataset_df["type"] == "zeroshot"]["iid_f1"]
             zeroshot_ys = dataset_df[dataset_df["type"] == "zeroshot"]["ood_f1"]
 
@@ -315,7 +315,7 @@ else:
 
             ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="ICL Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
-        if not hide_fewshot:
+        if not hide_few_shot:
             finetuned_xs = dataset_df[dataset_df["type"] == "fewshot"]["iid_f1"]
             finetuned_ys = dataset_df[dataset_df["type"] == "fewshot"]["ood_f1"]
 
