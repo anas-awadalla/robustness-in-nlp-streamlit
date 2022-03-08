@@ -296,7 +296,7 @@ else:
             z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
             y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
 
-            ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="Finetuned Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
+            ax.plot(transform(finetuned_xs), y_linear_finetuned, "g-", label="Finetuned Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         if not hide_icl:
             finetuned_xs = dataset_df[dataset_df["type"] == "icl"]["iid_f1"]
@@ -338,6 +338,7 @@ else:
         ax.legend(loc='best', prop={'size': 4})
         
         plt.xticks(fontsize=6)
+        plt.yticks(fontsize=6)
         plt.title(f"Performance on {dataset} vs {id_dataset}")
         plt.xlabel(f"F1 Scores on {id_dataset}")
         plt.ylabel(f"F1 Scores on {dataset}")
