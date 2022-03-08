@@ -35,17 +35,21 @@ dataset_to_size = {
     # 'TextbookQA': 1503,
     'BioASQ': 1504,
     'RelationExtraction': 2948
+    'NewsQA': 4212,
+    'DuoRC.ParaphraseRC': 1501,
+    'TriviaQA-web': 7785,
+    'SearchQA': 16980,
+    'HotpotQA': 5904,
+    'NaturalQuestionsShort': 12836
 }
 
 dataset = st.sidebar.selectbox(
     'Dataset (Y-Axis)',
-    ('squadshifts_nyt', 'squad', 'squadshifts_reddit', 'squadshifts_new_wiki',
-     'squadshifts_amazon', 'RACE', 'DROP', 'BioASQ', 'RelationExtraction'))
+    list(dataset_to_size.keys()))
 
 id_dataset = st.sidebar.selectbox(
     'Dataset (X-Axis)',
-    ('squad', 'squadshifts_nyt', 'squadshifts_reddit', 'squadshifts_new_wiki',
-     'squadshifts_amazon', 'RACE', 'DROP', 'BioASQ', 'RelationExtraction'))
+    list(dataset_to_size.keys()))
 
 hide_zero_shot = st.checkbox("Hide Zero Shot Models", value=False)
 hide_few_shot = st.checkbox("Hide Few Shot Models", value=False)
