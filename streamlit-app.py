@@ -116,6 +116,7 @@ def bootstrap(model, dataset_name, n_samples, num_iterations):
 
 ood_bootstrap_f1 = defaultdict()
 iid_bootstrap_f1 = defaultdict()
+to_remove = []
 for model in df['model_name'].unique():
     ood_output = bootstrap(
         model, dataset, n_samples_ood, num_iterations_ood)
@@ -124,7 +125,10 @@ for model in df['model_name'].unique():
     if ood_output and id_output:
         ood_bootstrap_f1[model] = ood_output
         iid_bootstrap_f1[model] = id_output
-        df = df[df['model_name'] != model]
+    else:
+        to_remove.append(model)
+
+df = df[df['model_name'] not in to_remove]
 
 ood_df = df.loc[df['dataset_name'] == dataset].drop(columns=['dataset_name'])
 iid_df = df.loc[df['dataset_name'] == id_dataset].drop(columns=['dataset_name'])
