@@ -335,7 +335,7 @@ else:
         ### y=x line
         ax.plot(min([ax.get_xlim(), ax.get_ylim()]), max([ax.get_xlim(), ax.get_ylim()]), '--', label="y=x")
         
-        ax.legend(loc='best', prop={'size': 4})
+        ax.legend(loc='best', prop={'size': 8})
         
         plt.xticks(fontsize=6)
         plt.yticks(fontsize=6)
