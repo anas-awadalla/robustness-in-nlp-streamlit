@@ -270,7 +270,7 @@ else:
 
             # Add zero-shot
             ax.scatter(transform(zeroshot_xs), transform(zeroshot_ys),
-                label=f"Zeroshot Models", marker='*', s=200, alpha=0.8, c='C4',
+                label=f"Zeroshot Models", marker='*', s=200, alpha=0.8, c='y',
             )
 
             ### Zero-shot linear fit
@@ -287,7 +287,7 @@ else:
 
             # Add fine-tuned
             ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-                label=f"Finetuned Models", marker='D', s=100, alpha=0.8, c='C1',
+                label=f"Finetuned Models", marker='D', s=100, alpha=0.8, c='g',
             )
 
             ### Fine-tuned linear fit
@@ -304,7 +304,7 @@ else:
 
             # Add ICL
             ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-                label=f"ICL Models", marker='D', s=100, alpha=0.8, c='C2',
+                label=f"ICL Models", marker='D', s=100, alpha=0.8, c='r',
             )
 
             ### Fine-tuned linear fit
@@ -321,7 +321,7 @@ else:
 
             # Add Fewshot
             ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-                label=f"Fewshot Models", marker='*', s=100, alpha=0.8, c='C3',
+                label=f"Fewshot Models", marker='*', s=100, alpha=0.8, c='b',
             )
 
             ### Fewshot linear fit
