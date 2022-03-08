@@ -176,44 +176,52 @@ if scaling=="Linear":
                      labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
 
     if not hide_finetuned:
-        # Add trendline for finetuned models
-        z = np.polyfit(dataset_df[dataset_df['type'] == 'finetuned']['iid_f1'],
-                       dataset_df[dataset_df['type'] == 'finetuned']['ood_f1'], 1)
-        y_fit = np.poly1d(z)(dataset_df[dataset_df['type'] == 'finetuned']['iid_f1'])
+        finetuned_df = dataset_df[dataset_df["type"] == "finetuned"]
+        if len(finetuned_df) != 0:
+            # Add trendline for finetuned models
+            z = np.polyfit(finetuned_df['iid_f1'],
+                           finetuned_df['ood_f1'], 1)
+            y_fit = np.poly1d(z)(finetuned_df['iid_f1'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'finetuned']['ood_f1'] ,y_fit):0.3f}"
-        fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'finetuned']
-                       ['iid_f1'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
+            line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(finetuned_df['ood_f1'] ,y_fit):0.3f}"
+            fig.add_traces(go.Scatter(x=finetuned_df
+                           ['iid_f1'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
 
     if not hide_zero_shot:
-        # Add trendline for zero-shot models
-        z = np.polyfit(dataset_df[dataset_df['type'] == 'zeroshot']['iid_f1'],
-                       dataset_df[dataset_df['type'] == 'zeroshot']['ood_f1'], 1)
-        y_fit = np.poly1d(z)(dataset_df[dataset_df['type'] == 'zeroshot']['iid_f1'])
+        zeroshot_df = dataset_df[dataset_df["type"] == "zeroshot"]
+        if len(zeroshot_df) != 0:
+            # Add trendline for zero-shot models
+            z = np.polyfit(zeroshot_df['iid_f1'],
+                           zeroshot_df['ood_f1'], 1)
+            y_fit = np.poly1d(z)(zeroshot_df['iid_f1'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'zeroshot']['ood_f1'] ,y_fit):0.3f}"
-        fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'zeroshot']
-                       ['iid_f1'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
+            line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(zeroshot_df['ood_f1'] ,y_fit):0.3f}"
+            fig.add_traces(go.Scatter(x=zeroshot_df
+                           ['iid_f1'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
 
     if not hide_few_shot:
-        # Add trendline for few-shot models
-        z = np.polyfit(dataset_df[dataset_df['type'] == 'fewshot']['iid_f1'],
-                       dataset_df[dataset_df['type'] == 'fewshot']['ood_f1'], 1)
-        y_fit = np.poly1d(z)(dataset_df[dataset_df['type'] == 'fewshot']['iid_f1'])
+        fewshot_df = dataset_df[dataset_df["type"] == "fewshot"]
+        if len(fewshot_df) != 0:
+            # Add trendline for few-shot models
+            z = np.polyfit(fewshot_df['iid_f1'],
+                           fewshot_df['ood_f1'], 1)
+            y_fit = np.poly1d(z)(fewshot_df['iid_f1'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'fewshot']['ood_f1'] ,y_fit):0.3f}"
-        fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'fewshot']
-                       ['iid_f1'], y=y_fit, name='Few-Shot Fit:'+line_equation, mode='lines'))
+            line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(fewshot_df['ood_f1'] ,y_fit):0.3f}"
+            fig.add_traces(go.Scatter(x=fewshot_df
+                           ['iid_f1'], y=y_fit, name='Few-Shot Fit:'+line_equation, mode='lines'))
 
     if not hide_icl:
-        # Add trendline for icl models
-        z = np.polyfit(dataset_df[dataset_df['type'] == 'icl']['iid_f1'],
-                       dataset_df[dataset_df['type'] == 'icl']['ood_f1'], 1)
-        y_fit = np.poly1d(z)(dataset_df[dataset_df['type'] == 'icl']['iid_f1'])
+        icl_df = dataset_df[dataset_df["type"] == "icl"]
+        if len(icl_df) != 0:
+            # Add trendline for icl models
+            z = np.polyfit(icl_df['iid_f1'],
+                           icl_df['ood_f1'], 1)
+            y_fit = np.poly1d(z)(icl_df['iid_f1'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'icl']['ood_f1'] ,y_fit):0.3f}"
-        fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'icl']
-                       ['iid_f1'], y=y_fit, name='ICL Fit:'+line_equation, mode='lines'))
+            line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(icl_df['ood_f1'] ,y_fit):0.3f}"
+            fig.add_traces(go.Scatter(x=icl_df
+                           ['iid_f1'], y=y_fit, name='ICL Fit:'+line_equation, mode='lines'))
 
     fig.add_shape(type='line',
                     x0=0,
