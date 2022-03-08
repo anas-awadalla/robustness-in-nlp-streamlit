@@ -85,10 +85,12 @@ def bootstrap(model, dataset_name, n_samples, num_iterations):
             data_file_section = file_name.split('_', 1)[-1]
         if file_name.find(model.split('/')[-1].lower()) != -1 and data_file_section.find(dataset_name.lower()) != -1:
             selected_file = file
-    print(model)
     
-    with open(selected_file) as f:
-        data = json.load(f)
+    try:
+        with open(selected_file) as f:
+            data = json.load(f)
+    except:
+        Exception(f"{model_name} prediction file not found")
 
     f1_scores = []
 
