@@ -11,6 +11,7 @@ from transformers.data.metrics.squad_metrics import compute_f1
 import os
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+import scipy
 
 """
 The following datasets are available along with thier sizes:
