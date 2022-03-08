@@ -253,7 +253,10 @@ else:
         y_range = (0.95 * min(dataset_df['ood_f1']), 1.05 * max(dataset_df['ood_f1']))
         x_range = (0.95 * min(dataset_df['iid_f1']), 1.05 * max(dataset_df['iid_f1']))
         
-        transform = adjust_plot(ax, x_range, y_range, scaling='logit')
+        try:
+            transform = adjust_plot(ax, x_range, y_range, scaling='logit')
+        except:
+            raise Exception(f"{x_range[0]}{x_range[1]}{y_range[0]}{y_range[1]}")
         
         zeroshot_xs = dataset_df[dataset_df["type"] == "zeroshot"]["iid_f1"]
         zeroshot_ys = dataset_df[dataset_df["type"] == "zeroshot"]["ood_f1"]
