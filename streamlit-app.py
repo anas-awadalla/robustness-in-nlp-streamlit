@@ -274,72 +274,80 @@ else:
             raise Exception(f"{x_range[0]}{x_range[1]}{y_range[0]}{y_range[1]}")
         
         if not hide_zero_shot:
-            zeroshot_xs = dataset_df[dataset_df["type"] == "zeroshot"]["iid_f1"]
-            zeroshot_ys = dataset_df[dataset_df["type"] == "zeroshot"]["ood_f1"]
+            zeroshot_df = dataset_df[dataset_df["type"] == "zeroshot"]
+            if len(zeroshot_df) != 0:
+                zeroshot_xs = zeroshot_df["iid_f1"]
+                zeroshot_ys = zeroshot_df["ood_f1"]
 
-            # Add zero-shot
-            ax.scatter(transform(zeroshot_xs), transform(zeroshot_ys),
-                label=f"Zeroshot Models", marker='*', s=200, alpha=0.8, c='y',
-            )
+                # Add zero-shot
+                ax.scatter(transform(zeroshot_xs), transform(zeroshot_ys),
+                    label=f"Zeroshot Models", marker='*', s=200, alpha=0.8, c='y',
+                )
 
-            ### Zero-shot linear fit
-            sorted_pts = sorted(zip(zeroshot_xs, zeroshot_ys), key=lambda x: x[0])
-            zeroshot_xs, zeroshot_ys = zip(*sorted_pts)
-            z_zeroshot = np.polyfit(transform(zeroshot_xs), transform(zeroshot_ys), 1)
-            y_linear_zeroshot = np.poly1d(z_zeroshot)(transform(zeroshot_xs))
+                ### Zero-shot linear fit
+                sorted_pts = sorted(zip(zeroshot_xs, zeroshot_ys), key=lambda x: x[0])
+                zeroshot_xs, zeroshot_ys = zip(*sorted_pts)
+                z_zeroshot = np.polyfit(transform(zeroshot_xs), transform(zeroshot_ys), 1)
+                y_linear_zeroshot = np.poly1d(z_zeroshot)(transform(zeroshot_xs))
 
-            ax.plot(transform(zeroshot_xs), y_linear_zeroshot, "y-", label="Zeroshot Fit"+ f" $y={z_zeroshot[0]:0.3f}\;x{z_zeroshot[1]:+0.3f}$\n$R^2 = {r2_score(transform(zeroshot_ys),y_linear_zeroshot):0.3f}$")
-           
+                ax.plot(transform(zeroshot_xs), y_linear_zeroshot, "y-", label="Zeroshot Fit"+ f" $y={z_zeroshot[0]:0.3f}\;x{z_zeroshot[1]:+0.3f}$\n$R^2 = {r2_score(transform(zeroshot_ys),y_linear_zeroshot):0.3f}$")
+
         if not hide_finetuned:
-            finetuned_xs = dataset_df[dataset_df["type"] == "finetuned"]["iid_f1"]
-            finetuned_ys = dataset_df[dataset_df["type"] == "finetuned"]["ood_f1"]
+            finetuned_df = dataset_df[dataset_df["type"] == "finetuned"]
+            if len(finetuned_df) != 0:
+                finetuned_xs = finetuned_df["iid_f1"]
+                finetuned_ys = finetuned_df["ood_f1"]
 
-            # Add fine-tuned
-            ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-                label=f"Finetuned Models", marker='D', s=100, alpha=0.8, c='g',
-            )
+                # Add fine-tuned
+                ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
+                    label=f"Finetuned Models", marker='D', s=100, alpha=0.8, c='g',
+                )
 
-            ### Fine-tuned linear fit
-            sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
-            finetuned_xs, finetuned_ys = zip(*sorted_pts)
-            z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
-            y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+                ### Fine-tuned linear fit
+                sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
+                finetuned_xs, finetuned_ys = zip(*sorted_pts)
+                z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
+                y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
 
-            ax.plot(transform(finetuned_xs), y_linear_finetuned, "g-", label="Finetuned Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
+                ax.plot(transform(finetuned_xs), y_linear_finetuned, "g-", label="Finetuned Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         if not hide_icl:
-            finetuned_xs = dataset_df[dataset_df["type"] == "icl"]["iid_f1"]
-            finetuned_ys = dataset_df[dataset_df["type"] == "icl"]["ood_f1"]
+            icl_df = dataset_df[dataset_df["type"] == "icl"]
+            if len(icl_df) != 0:
+                finetuned_xs = icl_df["iid_f1"]
+                finetuned_ys = icl_df["ood_f1"]
 
-            # Add ICL
-            ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-                label=f"ICL Models", marker='D', s=100, alpha=0.8, c='r',
-            )
+                # Add ICL
+                ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
+                    label=f"ICL Models", marker='D', s=100, alpha=0.8, c='r',
+                )
 
-            ### Fine-tuned linear fit
-            sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
-            finetuned_xs, finetuned_ys = zip(*sorted_pts)
-            z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
-            y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+                ### Fine-tuned linear fit
+                sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
+                finetuned_xs, finetuned_ys = zip(*sorted_pts)
+                z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
+                y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
 
-            ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="ICL Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
+                ax.plot(transform(finetuned_xs), y_linear_finetuned, "r-", label="ICL Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         if not hide_few_shot:
-            finetuned_xs = dataset_df[dataset_df["type"] == "fewshot"]["iid_f1"]
-            finetuned_ys = dataset_df[dataset_df["type"] == "fewshot"]["ood_f1"]
+            fewshot_df = dataset_df[dataset_df["type"] == "fewshot"]
+            if len(fewshot_df) != 0:
+                finetuned_xs = fewshot_df["iid_f1"]
+                finetuned_ys = fewshot_df["ood_f1"]
 
-            # Add Fewshot
-            ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
-                label=f"Fewshot Models", marker='*', s=100, alpha=0.8, c='b',
-            )
+                # Add Fewshot
+                ax.scatter(transform(finetuned_xs), transform(finetuned_ys),
+                    label=f"Fewshot Models", marker='*', s=100, alpha=0.8, c='b',
+                )
 
-            ### Fewshot linear fit
-            sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
-            finetuned_xs, finetuned_ys = zip(*sorted_pts)
-            z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
-            y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
+                ### Fewshot linear fit
+                sorted_pts = sorted(zip(finetuned_xs, finetuned_ys), key=lambda x: x[0])
+                finetuned_xs, finetuned_ys = zip(*sorted_pts)
+                z_finetuned = np.polyfit(transform(finetuned_xs), transform(finetuned_ys), 1)
+                y_linear_finetuned = np.poly1d(z_finetuned)(transform(finetuned_xs))
 
-            ax.plot(transform(finetuned_xs), y_linear_finetuned, "b-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
+                ax.plot(transform(finetuned_xs), y_linear_finetuned, "b-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         ### y=x line
         ax.plot(min([ax.get_xlim(), ax.get_ylim()]), max([ax.get_xlim(), ax.get_ylim()]), '--', label="y=x")
