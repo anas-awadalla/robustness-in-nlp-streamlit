@@ -58,7 +58,7 @@ id_dataset = st.sidebar.selectbox(
     'Dataset (X-Axis)',
     list(dataset_to_size.keys()))
 
-logit_scaling = st.sidebar.selectbox("Graph Scaling", ['Linear', 'Logit', 'Probit'])
+scaling = st.sidebar.selectbox("Graph Scaling", ['Linear', 'Logit', 'Probit'])
 
 hide_zero_shot = st.sidebar.checkbox("Hide Zero Shot Models", value=False)
 hide_few_shot = st.sidebar.checkbox("Hide Few Shot Models", value=False)
