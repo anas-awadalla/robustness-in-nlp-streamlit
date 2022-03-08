@@ -58,11 +58,12 @@ id_dataset = st.sidebar.selectbox(
     'Dataset (X-Axis)',
     list(dataset_to_size.keys()))
 
+logit_scaling = st.sidebar.selectbox("Graph Scaling", ['Linear', 'Logit', 'Probit'])
+
 hide_zero_shot = st.sidebar.checkbox("Hide Zero Shot Models", value=False)
 hide_few_shot = st.sidebar.checkbox("Hide Few Shot Models", value=False)
 hide_icl = st.sidebar.checkbox("Hide In Context Learning Models", value=False)
 hide_finetuned = st.sidebar.checkbox("Hide Finetuned Models", value=False)
-logit_scaling = st.sidebar.checkbox("Apply Logit Scaling", value=False)
 
 n_samples_ood = dataset_to_size[dataset]
 num_iterations_ood = 1000
@@ -167,7 +168,7 @@ if hide_few_shot:
 if hide_icl:
     dataset_df = dataset_df[dataset_df['type'] != 'icl']
 
-if not logit_scaling:
+if scaling=="Linear":
     
     fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
                      hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
@@ -236,9 +237,9 @@ else:
             else:
                 xtick_freq, ytick_freq = tick_freq, tick_freq
 
-            if scaling == 'probit':
+            if scaling == 'Probit':
                 h = scipy.stats.norm.ppf
-            elif scaling == 'logit':
+            elif scaling == 'Logit':
                 h = lambda p: np.log(p / (1 - p))
             else:
                 h = lambda p: p
