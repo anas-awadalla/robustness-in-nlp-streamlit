@@ -178,7 +178,7 @@ if not hide_few_shot:
                    dataset_df[dataset_df['type'] == 'fewshot']['ood_f1'], 1)
     y_fit = np.poly1d(z)(dataset_df[dataset_df['type'] == 'fewshot']['iid_f1'])
 
-    line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'few_shot']['ood_f1'] ,y_fit):0.3f}"
+    line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df[dataset_df['type'] == 'fewshot']['ood_f1'] ,y_fit):0.3f}"
     fig.add_traces(go.Scatter(x=dataset_df[dataset_df['type'] == 'fewshot']
                    ['iid_f1'], y=y_fit, name='Few-Shot Fit:'+line_equation, mode='lines'))
 
