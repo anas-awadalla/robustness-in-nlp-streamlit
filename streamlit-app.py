@@ -340,7 +340,7 @@ else:
         dataset_df['ood_f1']*=100.0
         dataset_df['iid_f1']*=100.0
         
-        st.pyplot()
+        st.pyplot(fig)
           
         
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
