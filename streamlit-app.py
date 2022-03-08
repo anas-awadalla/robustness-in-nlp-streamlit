@@ -250,8 +250,8 @@ else:
 
             return transform
         
-        y_range = (0.95 * min(dataset_df['ood_f1']), 1.05 * max(dataset_df['ood_f1']))
-        x_range = (0.95 * min(dataset_df['iid_f1']), 1.05 * max(dataset_df['iid_f1']))
+        y_range = (0.95 * min(dataset_df['ood_f1']/100.0), 1.05 * max(dataset_df['ood_f1']/100.0))
+        x_range = (0.95 * min(dataset_df['iid_f1']/100.0), 1.05 * max(dataset_df['iid_f1']/100.0))
         
         try:
             transform = adjust_plot(ax, x_range, y_range, scaling='logit')
