@@ -216,7 +216,7 @@ if not logit_scaling:
                     xref='x',
                     yref='y')
     
-     st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
 
 else:
         fig, ax = plt.subplots()
@@ -341,8 +341,7 @@ else:
         dataset_df['iid_f1']*=100.0
         
         st.plotly_chart(fig)
-        
-        
+          
         
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
 dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1", "ood_bootstrap_f1"])
