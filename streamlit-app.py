@@ -128,7 +128,8 @@ for model in df['model_name'].unique():
     else:
         to_remove.append(model)
 
-df = df[df['model_name'] not in to_remove]
+for sample in to_remove:
+    df = df[df['model_name'] != sample]
 
 ood_df = df.loc[df['dataset_name'] == dataset].drop(columns=['dataset_name'])
 iid_df = df.loc[df['dataset_name'] == id_dataset].drop(columns=['dataset_name'])
