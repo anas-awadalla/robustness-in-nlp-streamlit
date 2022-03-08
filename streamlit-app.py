@@ -63,6 +63,8 @@ hide_few_shot = st.checkbox("Hide Few Shot Models", value=False)
 hide_icl = st.checkbox("Hide In Context Learning Models", value=False)
 hide_finetuned = st.checkbox("Hide Finetuned Models", value=False)
 
+logit_scaling = st.checkbox("Apply Logit Scaling", value=False)
+
 n_samples_ood = dataset_to_size[dataset]
 num_iterations_ood = 1000
 n_samples_iid = dataset_to_size[id_dataset]
@@ -199,6 +201,10 @@ fig.add_shape(type='line',
                 line_dash="dash",
                 xref='x',
                 yref='y')
+
+if logit_scaling:
+    fig.update_xaxes(title_text=f"F1 Score Performance on {id_dataset} (Logit Scaling)", type="log", row=1, col=2)
+    fig.update_yaxes(title_text=f"F1 Score Performance on {dataset} (Logit Scaling)" type="log", row=1, col=2)
 
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
 dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1", "ood_bootstrap_f1"])
