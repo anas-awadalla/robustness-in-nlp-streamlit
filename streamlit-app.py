@@ -34,7 +34,7 @@ dataset_to_size = {
     'DROP': 1503, 
     # 'TextbookQA': 1503,
     'BioASQ': 1504,
-    'RelationExtraction': 2948
+    'RelationExtraction': 2948,
     'NewsQA': 4212,
     'DuoRC.ParaphraseRC': 1501,
     'TriviaQA-web': 7785,
