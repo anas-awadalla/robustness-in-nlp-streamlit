@@ -61,7 +61,7 @@ id_dataset = st.sidebar.selectbox(
 
 if dataset == "DuoRC.ParaphraseRC":
     pandas_dataset = "DuoRC(ParaphraseRC)"
- else:
+else:
     pandas_dataset = "DuoRC.ParaphraseRC"
 
 if id_dataset == "DuoRC.ParaphraseRC":
