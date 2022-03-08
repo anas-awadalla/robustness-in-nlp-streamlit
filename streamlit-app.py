@@ -76,9 +76,9 @@ hide_few_shot = st.sidebar.checkbox("Hide Few Shot Models", value=False)
 hide_icl = st.sidebar.checkbox("Hide In Context Learning Models", value=False)
 hide_finetuned = st.sidebar.checkbox("Hide Finetuned Models", value=False)
 
-n_samples_ood = dataset_to_size[pandas_dataset]
+n_samples_ood = dataset_to_size[dataset]
 num_iterations_ood = 1000
-n_samples_iid = dataset_to_size[pandas_id_dataset]
+n_samples_iid = dataset_to_size[id_dataset]
 num_iterations_iid = 1000
 
 results_path = Path(".") / "results"
