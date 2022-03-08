@@ -140,17 +140,15 @@ iid_df['e_minus_iid'] = iid_df['model_name'].apply(
 iid_df['e_plus_iid'] = iid_df['model_name'].apply(
     lambda x: abs(iid_bootstrap_f1[x][1][1] - iid_bootstrap_f1[x][0]))
 
-ood_df = ood_df.drop(columns=['k_shot', 'model_family', 'exact_match'])
+ood_df = ood_df.drop(columns=['type', 'model_family', 'exact_match'])
 iid_df = iid_df.rename(columns={"f1": "iid_f1"})
 ood_df = ood_df.rename(columns={"f1": "ood_f1"})
 
 dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
     'model_name')], axis=1, join='inner').reset_index()
-#dataset_df['zero_shot'] = dataset_df['zero_shot'].astype('bool')
-#dataset_df = dataset_df.rename(columns={"zero_shot": "k_shot"})
 
 fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
-                 hover_data=["model_name", "k_shot"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
+                 hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
                  error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {id_dataset} and {dataset}",
                  labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
 
