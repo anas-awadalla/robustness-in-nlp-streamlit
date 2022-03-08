@@ -59,6 +59,12 @@ id_dataset = st.sidebar.selectbox(
     'Dataset (X-Axis)',
     list(dataset_to_size.keys()))
 
+if dataset == "DuoRC.ParaphraseRC":
+    pandas_dataset = "DuoRC"
+
+if id_dataset == "DuoRC.ParaphraseRC":
+    pandas_id_dataset = "DuoRC"
+
 scaling = st.sidebar.selectbox("Graph Scaling", ['Linear', 'Logit', 'Probit'])
 
 hide_zero_shot = st.sidebar.checkbox("Hide Zero Shot Models", value=False)
@@ -133,8 +139,8 @@ for model in df['model_name'].unique():
 for sample in to_remove:
     df = df[df['model_name'] != sample]
 
-ood_df = df.loc[df['dataset_name'] == f"`{dataset}`"].drop(columns=['dataset_name'])
-iid_df = df.loc[df['dataset_name'] == f"`{id_dataset}`"].drop(columns=['dataset_name'])
+ood_df = df.loc[df['dataset_name'] == pandas_dataset].drop(columns=['dataset_name'])
+iid_df = df.loc[df['dataset_name'] == pandas_id_dataset].drop(columns=['dataset_name'])
 
 ood_df['ood_bootstrap_f1'] = ood_df['model_name'].apply(
     lambda x: ood_bootstrap_f1[x][0])
