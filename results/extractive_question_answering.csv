@@ -981,3 +981,5 @@ anas-awadalla/roberta-base-few-shot-k-16-finetuned-squad-seed-0,TriviaQA-web,12.
 anas-awadalla/roberta-base-few-shot-k-16-finetuned-squad-seed-0,SearchQA,12.455842859979159,8.103651354534747
 anas-awadalla/roberta-base-few-shot-k-16-finetuned-squad-seed-0,HotpotQA,9.676045897016603,4.89747500423657
 anas-awadalla/roberta-base-few-shot-k-16-finetuned-squad-seed-0,NaturalQuestionsShort,12.312093085384562,4.8613275163602365
+mrm8488/bert-tiny-5-finetuned-squadv2,HotpotQA,43.62546143478971,30.503304524656837
+mrm8488/bert-tiny-5-finetuned-squadv2,NaturalQuestionsShort,44.88714163308966,31.435026488002492
