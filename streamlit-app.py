@@ -269,7 +269,7 @@ else:
         x_range = (0.95 * min(dataset_df['iid_f1']), 1.05 * max(dataset_df['iid_f1']))
         
         try:
-            transform = adjust_plot(ax, x_range, y_range, scaling='logit')
+            transform = adjust_plot(ax, x_range, y_range, scaling=scaling)
         except:
             raise Exception(f"{x_range[0]}{x_range[1]}{y_range[0]}{y_range[1]}")
         
