@@ -21,8 +21,15 @@ The following datasets are available along with thier sizes:
 'squadshifts_amazon': 9885,
 'RACE': 674, 
 'DROP': 1503, 
+'TextbookQA': 1503,
 'BioASQ': 1504,
-'RelationExtraction': 2948
+'RelationExtraction': 2948,
+'NewsQA': 4212,
+'DuoRC.ParaphraseRC': 1501,
+'TriviaQA-web': 7785,
+'SearchQA': 16980,
+'HotpotQA': 5904,
+'NaturalQuestionsShort': 12836
 """
 dataset_to_size = {
     'squad': 10570,
@@ -32,7 +39,7 @@ dataset_to_size = {
     'squadshifts_amazon': 9885,
     'RACE': 674, 
     'DROP': 1503, 
-    # 'TextbookQA': 1503,
+    'TextbookQA': 1503,
     'BioASQ': 1504,
     'RelationExtraction': 2948,
     'NewsQA': 4212,
