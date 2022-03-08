@@ -219,6 +219,7 @@ hf://allenai/bidaf,squadshifts_nyt,72.51693131787682,61.58966716343765,finetuned
 hf://allenai/bidaf,squadshifts_amazon,54.92266665007879,38.76580677794638,finetuned,bidaf
 hf://allenai/bidaf,squadshifts_reddit,58.86189977810225,44.10894624094665,finetuned,bidaf
 hf://allenai/bidaf,squadshifts_new_wiki,75.88757027873083,63.46686822877299,finetuned,bidaf
+gpt2-medium_shot_1_seed_1,squad,14.519347158696231,1.5231788079470199
 gpt2-medium_shot_1_seed_1,squadshifts_nyt,13.645732921146667,1.4207650273224044,icl,gpt
 gpt2-medium_shot_1_seed_1,squadshifts_amazon,13.284796504276741,1.244309559939302,icl,gpt
 gpt2-medium_shot_1_seed_1,squadshifts_reddit,13.485005499063645,1.683158216872386,icl,gpt
