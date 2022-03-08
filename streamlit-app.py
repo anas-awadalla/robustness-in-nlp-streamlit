@@ -73,7 +73,7 @@ results_path = Path(".") / "results"
 
 df = pd.read_csv(os.path.join(results_path.absolute(),
                  'extractive_question_answering.csv'))
-
+df.drop_duplicates(inplace=True)
 
 @st.experimental_memo(show_spinner=True)
 def bootstrap(model, dataset_name, n_samples, num_iterations):
