@@ -58,12 +58,11 @@ id_dataset = st.sidebar.selectbox(
     'Dataset (X-Axis)',
     list(dataset_to_size.keys()))
 
-hide_zero_shot = st.checkbox("Hide Zero Shot Models", value=False)
-hide_few_shot = st.checkbox("Hide Few Shot Models", value=False)
-hide_icl = st.checkbox("Hide In Context Learning Models", value=False)
-hide_finetuned = st.checkbox("Hide Finetuned Models", value=False)
-
-logit_scaling = st.checkbox("Apply Logit Scaling", value=False)
+hide_zero_shot = st.sidebar.checkbox("Hide Zero Shot Models", value=False)
+hide_few_shot = st.sidebar.checkbox("Hide Few Shot Models", value=False)
+hide_icl = st.sidebar.checkbox("Hide In Context Learning Models", value=False)
+hide_finetuned = st.sidebar.checkbox("Hide Finetuned Models", value=False)
+logit_scaling = st.sidebar.checkbox("Apply Logit Scaling", value=False)
 
 n_samples_ood = dataset_to_size[dataset]
 num_iterations_ood = 1000
@@ -86,6 +85,7 @@ def bootstrap(model, dataset_name, n_samples, num_iterations):
             data_file_section = file_name.split('_', 1)[-1]
         if file_name.find(model.split('/')[-1].lower()) != -1 and data_file_section.find(dataset_name.lower()) != -1:
             selected_file = file
+    print(model)
     
     with open(selected_file) as f:
         data = json.load(f)
