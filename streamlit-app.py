@@ -90,7 +90,7 @@ def bootstrap(model, dataset_name, n_samples, num_iterations):
         with open(selected_file) as f:
             data = json.load(f)
     except:
-        raise Exception(f"{model} prediction file not found")
+        print(f"{model} prediction files not found")
 
     f1_scores = []
 
