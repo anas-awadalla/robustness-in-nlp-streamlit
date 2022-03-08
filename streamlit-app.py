@@ -76,9 +76,9 @@ hide_few_shot = st.sidebar.checkbox("Hide Few Shot Models", value=False)
 hide_icl = st.sidebar.checkbox("Hide In Context Learning Models", value=False)
 hide_finetuned = st.sidebar.checkbox("Hide Finetuned Models", value=False)
 
-n_samples_ood = dataset_to_size[dataset]
+n_samples_ood = dataset_to_size[pandas_dataset]
 num_iterations_ood = 1000
-n_samples_iid = dataset_to_size[id_dataset]
+n_samples_iid = dataset_to_size[pandas_id_dataset]
 num_iterations_iid = 1000
 
 results_path = Path(".") / "results"
@@ -131,9 +131,9 @@ iid_bootstrap_f1 = defaultdict()
 to_remove = []
 for model in df['model_name'].unique():
     ood_output = bootstrap(
-        model, dataset, n_samples_ood, num_iterations_ood)
+        model, pandas_dataset, n_samples_ood, num_iterations_ood)
     id_output = bootstrap(
-        model, id_dataset, n_samples_iid, num_iterations_ood)
+        model, pandas_id_dataset, n_samples_iid, num_iterations_ood)
     if ood_output and id_output:
         ood_bootstrap_f1[model] = ood_output
         iid_bootstrap_f1[model] = id_output
@@ -183,8 +183,8 @@ if scaling=="Linear":
     
     fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
                      hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
-                     error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {id_dataset} and {dataset}",
-                     labels=dict(iid_f1=f"F1 Score Performance on {id_dataset}", ood_f1=f"F1 Score Performance on {dataset}"))
+                     error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}",
+                     labels=dict(iid_f1=f"F1 Score Performance on {pandas_id_dataset}", ood_f1=f"F1 Score Performance on {pandas_dataset}"))
 
     if not hide_finetuned:
         finetuned_df = dataset_df[dataset_df["type"] == "finetuned"]
@@ -375,9 +375,9 @@ else:
         
         plt.xticks(fontsize=6)
         plt.yticks(fontsize=6)
-        plt.title(f"Performance on {dataset} vs {id_dataset}")
-        plt.xlabel(f"F1 Scores on {id_dataset}")
-        plt.ylabel(f"F1 Scores on {dataset}")
+        plt.title(f"Performance on {pandas_dataset} vs {pandas_id_dataset}")
+        plt.xlabel(f"F1 Scores on {pandas_id_dataset}")
+        plt.ylabel(f"F1 Scores on {pandas_dataset}")
         
         dataset_df['ood_f1']*=100.0
         dataset_df['iid_f1']*=100.0
