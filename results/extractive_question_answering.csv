@@ -496,7 +496,7 @@ anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,TriviaQA-
 anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,SearchQA,6.357181643348724,2.9681978798586575,fewshot,spanbert
 anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,HotpotQA,5.090798377921985,1.2031859006947976,fewshot,spanbert
 anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,NaturalQuestionsShort,6.8765742359140125,2.1346213773761296,fewshot,spanbert
-anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,squad,6.509516686465055,2.327341532639546,fewshot,spanbert,fewshot,spanbert
+anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,squad,6.509516686465055,2.327341532639546,fewshot,spanbert
 anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,squadshifts_nyt,4.651487261082694,1.5996025832091405,fewshot,spanbert
 anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,squadshifts_amazon,6.945006066472553,2.063732928679818,fewshot,spanbert
 anas-awadalla/spanbert-base-cased-few-shot-k-16-finetuned-squad-seed-4,squadshifts_reddit,7.566742082696039,1.968785065796185,fewshot,spanbert
