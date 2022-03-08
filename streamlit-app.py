@@ -39,7 +39,7 @@ dataset_to_size = {
     'squadshifts_amazon': 9885,
     'RACE': 674, 
     'DROP': 1503, 
-    'TextbookQA': 1503,
+#     'TextbookQA': 1503,
     'BioASQ': 1504,
     'RelationExtraction': 2948,
     'NewsQA': 4212,
@@ -91,6 +91,7 @@ def bootstrap(model, dataset_name, n_samples, num_iterations):
             data = json.load(f)
     except:
         print(f"{model} prediction files not found")
+        return
 
     f1_scores = []
 
@@ -115,13 +116,17 @@ def bootstrap(model, dataset_name, n_samples, num_iterations):
 
 ood_bootstrap_f1 = defaultdict()
 for model in df['model_name'].unique():
-    ood_bootstrap_f1[model] = bootstrap(
+    output = bootstrap(
         model, dataset, n_samples_ood, num_iterations_ood)
+    if output:
+        ood_bootstrap_f1[model] = output
 
 iid_bootstrap_f1 = defaultdict()
 for model in df['model_name'].unique():
-    iid_bootstrap_f1[model] = bootstrap(
-        model, id_dataset, n_samples_iid, num_iterations_iid)
+    output = bootstrap(
+        model, id_dataset, n_samples_iid, num_iterations_ood)
+    if output:
+        iid_bootstrap_f1[model] = output
 
 ood_df = df.loc[df['dataset_name'] == dataset].drop(columns=['dataset_name'])
 iid_df = df.loc[df['dataset_name'] == id_dataset].drop(columns=['dataset_name'])
