@@ -250,8 +250,11 @@ else:
 
             return transform
         
-        y_range = (0.95 * min(dataset_df['ood_f1']/100.0), 1.05 * max(dataset_df['ood_f1']/100.0))
-        x_range = (0.95 * min(dataset_df['iid_f1']/100.0), 1.05 * max(dataset_df['iid_f1']/100.0))
+        dataset_df['ood_f1']/=100.0
+        dataset_df['iid_f1']/=100.0
+        
+        y_range = (0.95 * min(dataset_df['ood_f1']), 1.05 * max(dataset_df['ood_f1']))
+        x_range = (0.95 * min(dataset_df['iid_f1']), 1.05 * max(dataset_df['iid_f1']))
         
         try:
             transform = adjust_plot(ax, x_range, y_range, scaling='logit')
@@ -330,6 +333,10 @@ else:
         plt.title(f"Performance on {dataset} vs {id_dataset}")
         plt.xlabel(f"F1 Scores on {id_dataset}")
         plt.ylabel(f"F1 Scores on {dataset}")
+        
+        dataset_df['ood_f1']*=100.0
+        dataset_df['iid_f1']*=100.0
+        
         
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
 dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1", "ood_bootstrap_f1"])
