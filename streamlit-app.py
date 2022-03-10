@@ -367,7 +367,7 @@ else:
                 ax.plot(transform(finetuned_xs), y_linear_finetuned, "b-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         ### y=x line
-        ax.plot(min([ax.get_xlim(), ax.get_ylim()]), max([ax.get_xlim(), ax.get_ylim()]), '--', label="y=x")
+        ax.plot(transform(min([ax.get_xlim(), ax.get_ylim()])), transform(max([ax.get_xlim(), ax.get_ylim()])), '--', label="y=x")
         
         ax.legend(loc='best', prop={'size': 8})
         
