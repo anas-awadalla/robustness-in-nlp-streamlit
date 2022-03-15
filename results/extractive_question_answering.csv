@@ -2143,7 +2143,7 @@ gpt2_shot_10_seed_1,squadshifts_new_wiki,14.56423018430891,0.05039052658100277,i
 gpt2_shot_10_seed_1,RACE,6.165025769183833,0.0,icl,gpt2
 anas-awadalla/roberta-base-few-shot-k-1024-finetuned-squad-seed-4,SearchQA,14.198561365818358,9.628975265017667,fewshot,roberta
 anas-awadalla/roberta-base-few-shot-k-1024-finetuned-squad-seed-4,HotpotQA,45.60125338111305,31.26588713777326,fewshot,roberta
-gpt2_shot_10_seed_1,RelationExtraction,15.345051895777047,0.06784260515603799
+gpt2_shot_10_seed_1,RelationExtraction,15.345051895777047,0.06784260515603799,icl,gpt2
 gpt2_shot_10_seed_1,TextbookQA,6.20076282654092,0.0,icl,gpt2
 gpt2_shot_10_seed_1,BioASQ,7.382320038028791,0.0,icl,gpt2
 gpt2_shot_10_seed_1,DROP,8.599438192344225,0.0665335994677312,icl,gpt2
