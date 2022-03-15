@@ -1745,9 +1745,9 @@ anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-8,squadshifts_new_
 anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-8,squadshifts_amazon,9.821911959366687,3.813859382903389,fewshot,spanbert
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-8,RACE,5.450571650218828,2.373887240356083,fewshot,roberta
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-8,RelationExtraction,13.901615262050955,8.514246947082768,fewshot,roberta
-anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-8,squadshifts_reddit,10.228740732949365,4.008976843823319
+anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-8,squadshifts_reddit,10.228740732949365,4.008976843823319,fewshot,spanbert
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-8,TextbookQA,7.390857016609424,3.992015968063872,fewshot,roberta
-anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-8,squadshifts_new_wiki,12.565834338417048,5.240614764424288
+anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-8,squadshifts_new_wiki,12.565834338417048,5.240614764424288,fewshot,spanbert
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-8,BioASQ,7.763887547579873,3.5904255319148937,fewshot,roberta
 anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-8,RACE,5.164619988312466,1.4836795252225519,fewshot,spanbert
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-8,DROP,4.718766091003,1.1310711909514304,fewshot,roberta
