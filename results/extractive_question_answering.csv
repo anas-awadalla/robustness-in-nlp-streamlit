@@ -1707,7 +1707,7 @@ anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-6,squad,17.5443573
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-6,squadshifts_nyt,16.434195927487192,10.064580228514656,fewshot,roberta
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-6,squadshifts_amazon,16.045587011388637,8.315629742033384,fewshot,roberta
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-6,squadshifts_reddit,16.579751616290608,8.987044782209528,fewshot,roberta
-anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-6,squad,9.83123636264362,5.648060548722801
+anas-awadalla/spanbert-base-cased-few-shot-k-32-finetuned-squad-seed-6,squad,9.83123636264362,5.648060548722801,fewshot,spanbert
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-6,squadshifts_new_wiki,18.134601971233245,10.090702947845806,fewshot,roberta
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-6,RACE,6.431722245681134,3.115727002967359,fewshot,roberta
 anas-awadalla/roberta-base-few-shot-k-64-finetuned-squad-seed-6,RelationExtraction,19.046814399554595,10.651289009497965,fewshot,roberta
