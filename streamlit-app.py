@@ -91,7 +91,7 @@ if hide_icl:
 if scaling=="Linear":
     
     fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
-                     hover_data=["model_name", "model_type"], error_x="iid_f1_upper", error_x_minus="iid_f1_lower",
+                     hover_data=["model_name", "type"], error_x="iid_f1_upper", error_x_minus="iid_f1_lower",
                      error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}",
                      labels=dict(iid_f1=f"F1 Score Performance on {pandas_id_dataset}", ood_f1=f"F1 Score Performance on {pandas_dataset}"))
 
