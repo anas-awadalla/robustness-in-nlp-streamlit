@@ -83,7 +83,7 @@ df.drop_duplicates(inplace=True)
 ood_df = df.loc[df['dataset'] == pandas_dataset].drop(columns=['dataset'])
 iid_df = df.loc[df['dataset'] == pandas_id_dataset].drop(columns=['dataset'])
 
-ood_df = ood_df.drop(columns=['type', 'model_family', 'exact_match'])
+ood_df = ood_df.drop(columns=['type', 'model_family'])
 iid_df = iid_df.rename(columns={"f1": "iid_f1"})
 iid_df = iid_df.rename(columns={"f1_lower": "iid_f1_lower"})
 iid_df = iid_df.rename(columns={"f1_upper": "iid_f1_upper"})
