@@ -60,7 +60,6 @@ df = pd.read_csv(os.path.join(results_path.absolute(),
                  'extractive_question_answering.csv'))
 df.drop_duplicates(inplace=True)
 
-print(df
 
 ood_df = df.loc[df['dataset'] == pandas_dataset].drop(columns=['dataset'])
 iid_df = df.loc[df['dataset'] == pandas_id_dataset].drop(columns=['dataset'])
