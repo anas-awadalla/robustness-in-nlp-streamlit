@@ -313,7 +313,6 @@ else:
           
         
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
-dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1", "ood_bootstrap_f1"])
 dataset_df = dataset_df.rename(columns={"iid_f1_upper": "id_f1_upper"})
 dataset_df = dataset_df.rename(columns={"iid_f1_lower": "id_f1_lower"})
 
