@@ -5,3 +5,4 @@ plotly
 sklearn
 matplotlib
 scipy
+click==8
