@@ -6,8 +6,6 @@ import pandas as pd
 from sklearn.metrics import r2_score
 import streamlit as st
 import plotly.express as px
-from sklearn.utils import resample
-from transformers.data.metrics.squad_metrics import compute_f1
 import os
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
