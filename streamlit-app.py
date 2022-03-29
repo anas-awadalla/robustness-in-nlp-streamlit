@@ -29,6 +29,25 @@ The following datasets are available along with thier sizes:
 'NaturalQuestionsShort': 12836
 """
 
+dataset_to_size = {
+    'squad': 10570,
+    'squadshifts_nyt': 10065,
+    'squadshifts_reddit': 9803,
+    'squadshifts_new_wiki': 7938,
+    'squadshifts_amazon': 9885,
+    'RACE': 674, 
+    'DROP': 1503, 
+#     'TextbookQA': 1503,
+    'BioASQ': 1504,
+    'RelationExtraction': 2948,
+    'NewsQA': 4212,
+#     'DuoRC.ParaphraseRC': 1501,
+    'TriviaQA-web': 7785,
+    'SearchQA': 16980,
+    'HotpotQA': 5904,
+    'NaturalQuestionsShort': 12836
+}
+
 dataset = st.sidebar.selectbox(
     'Dataset (Y-Axis)',
     list(dataset_to_size.keys()))
