@@ -78,7 +78,7 @@ results_path = Path(".") / "results"
 df = pd.read_csv(os.path.join(results_path.absolute(),
                  'extractive_question_answering.csv'))
 df.drop_duplicates(inplace=True)
-df.apply(lambda x: x.astype(str).str.lower())
+df = df.apply(lambda x: x.astype(str).str.lower())
 
 
 ood_df = df.loc[df['dataset'] == pandas_dataset.lower()].drop(columns=['dataset'])
