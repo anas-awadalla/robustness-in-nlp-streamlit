@@ -1,4 +1,4 @@
-model_name,model_family,dataset,f1,f1_lower,f1_upper,model_type
+model_name,model_family,dataset,f1,f1_lower,f1_upper,type
 csarron/roberta-large-squad-v1,roberta,squad,93.48212694240104,0.38913420401875953,0.3870414562475446,finetuned
 csarron/roberta-large-squad-v1,roberta,squadshifts_nyt,90.97690719062044,0.4382971047236879,0.42283072799536114,finetuned
 csarron/roberta-large-squad-v1,roberta,squadshifts_amazon,86.10670296527034,0.5469058345222635,0.5236857067503848,finetuned
