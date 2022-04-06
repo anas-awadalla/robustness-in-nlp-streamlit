@@ -205,7 +205,7 @@ else:
 
             ax.grid(linewidth=0.5)
 
-            return transform
+            return transform, tick_loc_x, tick_loc_y
         
         dataset_df['ood_f1']/=100.0
         dataset_df['iid_f1']/=100.0
@@ -214,7 +214,7 @@ else:
         x_range = (0.95 * min(dataset_df['iid_f1']), 1.05 * max(dataset_df['iid_f1']))
         
         try:
-            transform = adjust_plot(ax, x_range, y_range, scaling=scaling)
+            transform, tick_loc_x, tick_loc_y = adjust_plot(ax, x_range, y_range, scaling=scaling)
         except:
             raise Exception(f"{x_range[0]}{x_range[1]}{y_range[0]}{y_range[1]}")
         
@@ -295,7 +295,7 @@ else:
                 ax.plot(transform(finetuned_xs), y_linear_finetuned, "b-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         ### y=x line
-        ax.plot(transform(range(2,101)), transform(range(2,101)), '--', label="y=x")
+        ax.plot(tick_loc_x, tick_loc_y, '--', label="y=x")
         
         ax.legend(loc='best', prop={'size': 8})
         
