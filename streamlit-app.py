@@ -79,8 +79,10 @@ df = pd.read_csv(os.path.join(results_path.absolute(),
                  'extractive_question_answering.csv'))
 df.drop_duplicates(inplace=True)
 
-ood_df = df.loc[df['dataset'].lower() == pandas_dataset.lower()].drop(columns=['dataset'])
-iid_df = df.loc[df['dataset'].lower() == pandas_id_dataset.lower()].drop(columns=['dataset'])
+df['dataset'].str.lower()
+
+ood_df = df.loc[df['dataset'] == pandas_dataset.lower()].drop(columns=['dataset'])
+iid_df = df.loc[df['dataset'] == pandas_id_dataset.lower()].drop(columns=['dataset'])
 
 ood_df = ood_df.drop(columns=['type', 'model_family'])
 iid_df = iid_df.rename(columns={"f1": "iid_f1"})
