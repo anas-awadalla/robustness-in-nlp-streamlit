@@ -205,7 +205,7 @@ else:
 
             ax.grid(linewidth=0.5)
 
-            return transform, tick_loc_x, tick_loc_y
+            return transform
         
         dataset_df['ood_f1']/=100.0
         dataset_df['iid_f1']/=100.0
@@ -295,7 +295,7 @@ else:
                 ax.plot(transform(finetuned_xs), y_linear_finetuned, "b-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         ### y=x line
-        ax.plot(tick_loc_x, tick_loc_x, '--', label="y=x")
+        ax.plot(ax.xticks(), ax.xticks(), '--', label="y=x")
         
         ax.legend(loc='best', prop={'size': 8})
         
