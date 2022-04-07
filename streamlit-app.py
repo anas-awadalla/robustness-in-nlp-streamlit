@@ -42,7 +42,7 @@ dataset_to_size = {
     'BioASQ': 1504,
     'RelationExtraction': 2948,
     'NewsQA': 4212,
-#     'DuoRC.ParaphraseRC': 1501,
+    'DuoRC.ParaphraseRC': 1501,
     'TriviaQA-web': 7785,
     'SearchQA': 16980,
     'HotpotQA': 5904,
@@ -57,15 +57,15 @@ id_dataset = st.sidebar.selectbox(
     'Dataset (X-Axis)',
     list(dataset_to_size.keys()))
 
-if dataset == "DuoRC.ParaphraseRC":
-    pandas_dataset = "DuoRC(ParaphraseRC)"
-else:
-    pandas_dataset = dataset
+# if dataset == "DuoRC.ParaphraseRC":
+#     pandas_dataset = "DuoRC(ParaphraseRC)"
+# else:
+pandas_dataset = dataset
 
-if id_dataset == "DuoRC.ParaphraseRC":
-    pandas_id_dataset = "DuoRC(ParaphraseRC)"
-else:
-    pandas_id_dataset = id_dataset
+# if id_dataset == "DuoRC.ParaphraseRC":
+#     pandas_id_dataset = "DuoRC(ParaphraseRC)"
+# else:
+pandas_id_dataset = id_dataset
 
 scaling = st.sidebar.selectbox("Graph Scaling", ['Linear', 'Logit', 'Probit'])
 
