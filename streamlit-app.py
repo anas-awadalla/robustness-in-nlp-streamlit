@@ -41,7 +41,7 @@ dataset_to_size = {
     'BioASQ': 1504,
     'RelationExtraction': 2948,
     'NewsQA': 4212,
-    'DuoRC.ParaphraseRC': 1501,
+#     'DuoRC.ParaphraseRC': 1501,
     'TriviaQA-web': 7785,
     'SearchQA': 16980,
     'HotpotQA': 5904,
