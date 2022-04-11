@@ -81,10 +81,10 @@ df.drop_duplicates(inplace=True)
 
 df['dataset'] = df['dataset'].str.lower()
 
-hidden_models = st.multiselect(label="Hidden model families", options=list(df["type"].unique()))
+hidden_models = st.sidebar.multiselect(label="Hidden model families", options=list(df["model_family"].unique()))
 
 for hidden in hidden_models:
-    df = df[df['type'] != hidden]
+    df = df[df['model_family'] != hidden]
 
 ood_df = df.loc[df['dataset'] == pandas_dataset.lower()].drop(columns=['dataset'])
 iid_df = df.loc[df['dataset'] == pandas_id_dataset.lower()].drop(columns=['dataset'])
