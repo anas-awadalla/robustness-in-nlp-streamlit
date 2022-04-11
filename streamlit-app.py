@@ -81,7 +81,8 @@ df.drop_duplicates(inplace=True)
 
 df['dataset'] = df['dataset'].str.lower()
 
-hidden_models = st.sidebar.multiselect(label="Hidden model families", options=list(df["model_family"].unique()))
+visible_models = st.sidebar.multiselect(label="Visible model families", options=list(df["model_family"].unique()), default=list(df["model_family"].unique()))
+hidden_models = set(df["model_family"].unique()).difference(visible_models)
 
 for hidden in hidden_models:
     df = df[df['model_family'] != hidden]
