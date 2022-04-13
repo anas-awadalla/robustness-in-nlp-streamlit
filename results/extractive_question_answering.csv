@@ -847,7 +847,7 @@ anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,squads
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,squadshifts_reddit,8.433547416376816,0.420237430382544,0.4358887732356891,fewshot
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,squadshifts_new_wiki,8.183184813051193,0.4514608840118717,0.4767248313412278,fewshot
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,RACE,4.024144413930759,1.120963849024692,1.1875275142676154,fewshot
-anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert8,RelationExtraction,17.463291704010793,1.1106617493654838,1.1292233523463828,fewshot
+anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,RelationExtraction,17.463291704010793,1.1106617493654838,1.1292233523463828,fewshot
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,TextbookQA,2.0920377895322884,0.5455473249252705,0.5846562746440127,fewshot
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,BioASQ,9.874506475394313,1.289111654656974,1.3433543078631587,fewshot
 anas-awadalla/bert-base-uncased-few-shot-k-16-finetuned-squad-seed-8,bert,DROP,3.932641596942825,0.7504543497279736,0.8077016970011015,fewshot
