@@ -6,8 +6,6 @@ import pandas as pd
 from sklearn.metrics import r2_score
 import streamlit as st
 import plotly.express as px
-from sklearn.utils import resample
-from transformers.data.metrics.squad_metrics import compute_f1
 import os
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
@@ -30,6 +28,7 @@ The following datasets are available along with thier sizes:
 'HotpotQA': 5904,
 'NaturalQuestionsShort': 12836
 """
+
 dataset_to_size = {
     'squad': 10570,
     'squadshifts_nyt': 10065,
@@ -38,7 +37,7 @@ dataset_to_size = {
     'squadshifts_amazon': 9885,
     'RACE': 674, 
     'DROP': 1503, 
-#     'TextbookQA': 1503,
+    'TextbookQA': 1503,
     'BioASQ': 1504,
     'RelationExtraction': 2948,
     'NewsQA': 4212,
@@ -74,93 +73,30 @@ hide_few_shot = st.sidebar.checkbox("Hide Few Shot Models", value=False)
 hide_icl = st.sidebar.checkbox("Hide In Context Learning Models", value=False)
 hide_finetuned = st.sidebar.checkbox("Hide Finetuned Models", value=False)
 
-n_samples_ood = dataset_to_size[dataset]
-num_iterations_ood = 1000
-n_samples_iid = dataset_to_size[id_dataset]
-num_iterations_iid = 1000
-
 results_path = Path(".") / "results"
 
 df = pd.read_csv(os.path.join(results_path.absolute(),
                  'extractive_question_answering.csv'))
 df.drop_duplicates(inplace=True)
 
-@st.experimental_memo(show_spinner=True)
-def bootstrap(model, dataset_name, n_samples, num_iterations):
-    for file in results_path.glob(f'*.json'):
-        file_name = os.path.basename(file).split('.')[0].lower()
-        if dataset_name.find("_") == -1:
-            data_file_section = file_name.split('_')[-1]
-        else:
-            data_file_section = file_name.split('_', 1)[-1]
-        if file_name.find(model.split('/')[-1].lower()) != -1 and data_file_section.find(dataset_name.lower()) != -1:
-            selected_file = file
-    
-    try:
-        with open(selected_file) as f:
-            data = json.load(f)
-    except:
-        print(f"{model} prediction files not found")
-        return
+df['dataset'] = df['dataset'].str.lower()
 
-    f1_scores = []
+visible_models = st.sidebar.multiselect(label="Visible model families", options=list(df["model_family"].unique()), default=list(df["model_family"].unique()))
+hidden_models = set(df["model_family"].unique()).difference(visible_models)
 
-    for id in data.keys():
-        predicted_text = data[id]['prediction']['prediction_text']
-        actual_text = data[id]['reference']['answers']['text']
-        max_f1 = float("-inf")
-        for possible_answer in actual_text:
-            max_f1 = max(max_f1, 100.0 *
-                         compute_f1(possible_answer, predicted_text))
-        f1_scores.append(max_f1)
+for hidden in hidden_models:
+    df = df[df['model_family'] != hidden]
 
-    mean_list = []
-    for _ in range(num_iterations):
-        samples = resample(f1_scores, n_samples=n_samples, replace=True)
-        sample_mean = np.mean(samples)
-        mean_list.append(sample_mean)
-    overall_mean = np.mean(mean_list)
-    conf_interval = np.percentile(mean_list, [2.5, 97.5])
-    return overall_mean, conf_interval
+ood_df = df.loc[df['dataset'] == pandas_dataset.lower()].drop(columns=['dataset'])
+iid_df = df.loc[df['dataset'] == pandas_id_dataset.lower()].drop(columns=['dataset'])
 
-
-ood_bootstrap_f1 = defaultdict()
-iid_bootstrap_f1 = defaultdict()
-to_remove = []
-for model in df['model_name'].unique():
-    ood_output = bootstrap(
-        model, pandas_dataset, n_samples_ood, num_iterations_ood)
-    id_output = bootstrap(
-        model, pandas_id_dataset, n_samples_iid, num_iterations_ood)
-    if ood_output and id_output:
-        ood_bootstrap_f1[model] = ood_output
-        iid_bootstrap_f1[model] = id_output
-    else:
-        to_remove.append(model)
-
-for sample in to_remove:
-    df = df[df['model_name'] != sample]
-
-ood_df = df.loc[df['dataset_name'] == pandas_dataset].drop(columns=['dataset_name'])
-iid_df = df.loc[df['dataset_name'] == pandas_id_dataset].drop(columns=['dataset_name'])
-
-ood_df['ood_bootstrap_f1'] = ood_df['model_name'].apply(
-    lambda x: ood_bootstrap_f1[x][0])
-ood_df['e_minus_ood'] = ood_df['model_name'].apply(
-    lambda x: abs(ood_bootstrap_f1[x][1][0] - ood_bootstrap_f1[x][0]))
-ood_df['e_plus_ood'] = ood_df['model_name'].apply(
-    lambda x: abs(ood_bootstrap_f1[x][1][1] - ood_bootstrap_f1[x][0]))
-
-iid_df['iid_bootstrap_f1'] = iid_df['model_name'].apply(
-    lambda x: iid_bootstrap_f1[x][0])
-iid_df['e_minus_iid'] = iid_df['model_name'].apply(
-    lambda x: abs(iid_bootstrap_f1[x][1][0] - iid_bootstrap_f1[x][0]))
-iid_df['e_plus_iid'] = iid_df['model_name'].apply(
-    lambda x: abs(iid_bootstrap_f1[x][1][1] - iid_bootstrap_f1[x][0]))
-
-ood_df = ood_df.drop(columns=['type', 'model_family', 'exact_match'])
+ood_df = ood_df.drop(columns=['type', 'model_family'])
 iid_df = iid_df.rename(columns={"f1": "iid_f1"})
+iid_df = iid_df.rename(columns={"f1_lower": "iid_f1_lower"})
+iid_df = iid_df.rename(columns={"f1_upper": "iid_f1_upper"})
 ood_df = ood_df.rename(columns={"f1": "ood_f1"})
+ood_df = ood_df.rename(columns={"f1_lower": "ood_f1_lower"})
+ood_df = ood_df.rename(columns={"f1_upper": "ood_f1_upper"})
 
 dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
     'model_name')], axis=1, join='inner').reset_index()
@@ -180,8 +116,8 @@ if hide_icl:
 if scaling=="Linear":
     
     fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
-                     hover_data=["model_name", "type"], error_x="e_plus_iid", error_x_minus="e_minus_iid",
-                     error_y="e_plus_ood", error_y_minus="e_minus_ood", title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}",
+                     hover_data=["model_name", "type"], error_x="iid_f1_upper", error_x_minus="iid_f1_lower",
+                     error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}",
                      labels=dict(iid_f1=f"F1 Score Performance on {pandas_id_dataset}", ood_f1=f"F1 Score Performance on {pandas_dataset}"))
 
     if not hide_finetuned:
@@ -367,7 +303,8 @@ else:
                 ax.plot(transform(finetuned_xs), y_linear_finetuned, "b-", label="Fewshot Fit"+ f" $y={z_finetuned[0]:0.3f}\;x{z_finetuned[1]:+0.3f}$\n$R^2 = {r2_score(transform(finetuned_ys),y_linear_finetuned):0.3f}$")
         
         ### y=x line
-        ax.plot(transform(range(2,101)), transform(range(2,101)), '--', label="y=x")
+        locs, labels = plt.xticks()
+        ax.plot(locs, locs, '--', label="y=x")
         
         ax.legend(loc='best', prop={'size': 8})
         
@@ -384,9 +321,8 @@ else:
           
         
 dataset_df = dataset_df.rename(columns={"iid_f1": "id_f1"})
-dataset_df = dataset_df.drop(columns=["iid_bootstrap_f1", "ood_bootstrap_f1"])
-dataset_df = dataset_df.rename(columns={"e_minus_iid": "e_minus_id"})
-dataset_df = dataset_df.rename(columns={"e_plus_iid": "e_plus_id"})
+dataset_df = dataset_df.rename(columns={"iid_f1_upper": "id_f1_upper"})
+dataset_df = dataset_df.rename(columns={"iid_f1_lower": "id_f1_lower"})
 
 
 st.dataframe(dataset_df)
