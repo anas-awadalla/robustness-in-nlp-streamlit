@@ -72,6 +72,7 @@ hide_zero_shot = st.sidebar.checkbox("Hide Zero Shot Models", value=False)
 hide_few_shot = st.sidebar.checkbox("Hide Few Shot Models", value=False)
 hide_icl = st.sidebar.checkbox("Hide In Context Learning Models", value=False)
 hide_finetuned = st.sidebar.checkbox("Hide Finetuned Models", value=False)
+color_by_dataset = st.sidebar.checkbox("Color by Pretraining Dataset", value=False)
 
 results_path = Path(".") / "results"
 
@@ -112,11 +113,17 @@ if hide_few_shot:
     
 if hide_icl:
     dataset_df = dataset_df[dataset_df['type'] != 'icl']
+    
+# Create a dictionary of model_family: pretraining dataset
+dataset_map = {"bert": "bookcorpus+wikipedia", "bart": "bookcorpus+wikipedia", "minilm": "bookcorpus+wikipedia",  "albert": "bookcorpus+wikipedia", "roberta": "bookcorpus+wikipedia+cc-news+openwebtext+stories", "gpt": "webtext", "bidaf":"none (Word2Vec or ELMO)", "spanbert": "bookcorpus+wikipedia", "t5": "C4", "adapter-roberta": "bookcorpus+wikipedia+cc-news+openwebtext+stories", "adapter-bert": "bookcorpus+wikipedia", "xlm-roberta": "bookcorpus+wikipedia+cc-news+openwebtext+stories", "gpt-neo": "pile"} 
+    
+# Add a pretrain_dataset column and iterate over the rows to add the pretrain_dataset
+dataset_df['pretrain_dataset'] = dataset_df['model_family'].apply(lambda x: dataset_map[x])
 
 if scaling=="Linear":
     
-    fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family",
-                     hover_data=["model_name", "type"], error_x="iid_f1_upper", error_x_minus="iid_f1_lower",
+    fig = px.scatter(dataset_df, x="iid_f1", y="ood_f1", color="model_family" if not color_by_dataset else "pretrain_dataset",
+                     hover_data=["model_name", "type", "model_family"], error_x="iid_f1_upper", error_x_minus="iid_f1_lower",
                      error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}",
                      labels=dict(iid_f1=f"F1 Score Performance on {pandas_id_dataset}", ood_f1=f"F1 Score Performance on {pandas_dataset}"))
 
