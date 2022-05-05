@@ -126,8 +126,8 @@ def transform(f1, scaling=scaling):
         return np.log(np.divide(f1 / 100.0, 1.0 - f1 / 100.0))
     
 # Get x axis range
-yrange = (0.95 * min(dataset_df['ood_f1']), 1.05 * max(dataset_df['ood_f1']))
-xrange = (0.95 * min(dataset_df['iid_f1']), 1.05 * max(dataset_df['iid_f1']))
+yrange = [0, 105]
+xrange = [0, 105]
 
 dataset_df['iid_f1_transformed'] = transform(dataset_df['iid_f1'], scaling=scaling)
 dataset_df['ood_f1_transformed'] = transform(dataset_df['ood_f1'], scaling=scaling)
