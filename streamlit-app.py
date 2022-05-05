@@ -221,7 +221,7 @@ if not hide_icl:
                         ['iid_f1_transformed'], y=y_fit, name='ICL Fit:'+line_equation, mode='lines'))
 
 # Plot y=x line using tick values
-fig.add_trace(go.Line(x=transform(tick_loc_y), y=transform(tick_loc_y), mode='lines', name='y=x', line_dash="dash", line_color="blue"))
+fig.add_trace(go.Line(x=transform(tick_loc_y), y=transform(tick_loc_y), mode='lines', name='y=x', line_dash="dash", line_color="blue",hoverinfo='none'))
 
 st.plotly_chart(fig, use_container_width=True)
 
