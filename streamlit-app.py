@@ -150,10 +150,10 @@ dataset_df['pretrain_dataset'] = dataset_df['model_family'].apply(lambda x: data
 hover_data = {"iid_f1": True, "ood_f1": True, "type": True, "model_family": True, "pretrain_dataset": True, "iid_f1_transformed": False, "ood_f1_transformed": False}
 
 if scaling == 'Linear':
-    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name",  hover_data=hover_data, error_x="iid_f1_upper", error_x_minus="iid_f1_lower", error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}", labels=dict(iid_f1=f"F1 Score Performance on {pandas_id_dataset}", ood_f1=f"F1 Score Performance on {pandas_dataset}"))
+    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name",  hover_data=hover_data, error_x="iid_f1_upper", error_x_minus="iid_f1_lower", error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {pandas_dataset}"))
 
 else:
-    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name", hover_data=hover_data, title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}", labels=dict(iid_f1=f"F1 Score Performance on {pandas_id_dataset}", ood_f1=f"F1 Score Performance on {pandas_dataset}"))
+    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name", hover_data=hover_data, title=f"Performance Comparison Between {pandas_id_dataset} and {pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {pandas_dataset}"))
 
 
 tick_loc_x = [round(z) for z in np.arange(xrange[0], xrange[1], 5)]
