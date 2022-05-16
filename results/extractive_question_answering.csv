@@ -2728,7 +2728,7 @@ roberta-large-few-shot-k-256-finetuned-squad-seed-0,roberta,hotpotqa,51.07154971
 roberta-large-few-shot-k-256-finetuned-squad-seed-0,roberta,naturalquestionsshort,47.89864817177873,0.7270105696273177,0.7305925785263057,finetuned
 roberta-large-few-shot-k-64-finetuned-squad-seed-0,roberta,squad,30.188892369570564,0.7555338009029349,0.8130855154967129,finetuned
 roberta-large-few-shot-k-64-finetuned-squad-seed-0,roberta,squadshifts_nyt,27.26239115557844,0.7826224741148238,0.8084458781629174,finetuned
-roberta-large-few-shot-k-64-finetuned-squad-seed-0,nan,squadshifts_amazon,21.82172348382474,0.6645811013625647,0.697984512643071,nan
+roberta-large-few-shot-k-64-finetuned-squad-seed-0,roberta,squadshifts_amazon,21.82172348382474,0.6645811013625647,0.697984512643071,finetuned
 roberta-large-few-shot-k-64-finetuned-squad-seed-0,roberta,squadshifts_reddit,20.71721864865344,0.6647945030368234,0.6904418998472295,finetuned
 splinter-base-finetuned-squad,splinter,squad,91.86955375380089,0.47277666155399345,0.4522119464258907,finetuned
 splinter-base-finetuned-squad,splinter,squadshifts_nyt,88.82620399398319,0.5505387679132809,0.5206001175256887,finetuned
