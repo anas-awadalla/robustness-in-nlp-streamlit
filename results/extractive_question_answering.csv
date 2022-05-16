@@ -2775,7 +2775,7 @@ roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,triviaqa-web,10.85040
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,searchqa,8.12623809378866,0.3292630198064552,0.3593027785101519,fewshot
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,hotpotqa,13.550036212329534,0.7659256370374941,0.7890444875120721,fewshot
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,naturalquestionsshort,16.411526751406605,0.5236448696974207,0.5609391754029645,fewshot
-splinter-large-finetuned-squad,splinter,squad,92.5126014439354,0.40179330152965065,0.42549194714707994,fewshot
+splinter-large-finetuned-squad,splinter,squad,92.5126014439354,0.40179330152965065,0.42549194714707994,finetuned
 splinter-large-finetuned-squad,splinter,squadshifts_nyt,90.05083731245088,0.5044160854442481,0.5056820439939713,finetuned
 splinter-large-finetuned-squad,splinter,squadshifts_amazon,80.91509019087206,0.6555543001309161,0.6271272523861455,finetuned
 splinter-large-finetuned-squad,splinter,squadshifts_reddit,81.87280685072918,0.6484295021264899,0.6658034070148062,finetuned
