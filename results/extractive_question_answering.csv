@@ -2766,7 +2766,7 @@ roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,squadshifts_amazon,12
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,squadshifts_reddit,13.338837688729283,0.5054341767424138,0.5475696074081053,fewshot
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,squadshifts_new_wiki,12.848014362317434,0.5757674821056398,0.6326881101893882,fewshot
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,race,7.149046729496877,1.4822911947345485,1.6316626752962584,fewshot
-roberta-large-few-shot-k-64-finetuned-squad-seed-2,nan,relationextraction,20.118932935896986,1.0999089540032578,1.1100850298421108,nan
+roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,relationextraction,20.118932935896986,1.0999089540032578,1.1100850298421108,fewshot
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,textbookqa,7.786041039437664,1.1079166696649088,1.2133480541203214,fewshot
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,bioasq,6.283671193136211,0.9255210455013376,1.0021629092751168,fewshot
 roberta-large-few-shot-k-64-finetuned-squad-seed-2,roberta,drop,5.463028153987207,0.7879469299702437,0.8743754238866606,fewshot
