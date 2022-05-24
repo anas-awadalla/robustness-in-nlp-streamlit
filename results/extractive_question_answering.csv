@@ -2295,10 +2295,6 @@ splinter-large-few-shot-k-256-finetuned-squad-seed-0,splinter,triviaqa-web,59.70
 splinter-large-few-shot-k-256-finetuned-squad-seed-0,splinter,searchqa,24.42819595621914,0.5964334822101911,0.6216153845913119,fewshot
 splinter-large-few-shot-k-256-finetuned-squad-seed-0,splinter,hotpotqa,59.245060771086784,1.0491809148153308,0.9961989187158196,fewshot
 splinter-large-few-shot-k-256-finetuned-squad-seed-0,splinter,naturalquestionsshort,38.114348530830966,0.6685890208459,0.7405186985377483,fewshot
-splinter-large-few-shot-k-128-finetuned-squad-seed-0,splinter,squad,82.23546955419673,0.5902745702369288,0.6332696128435629,fewshot
-splinter-large-few-shot-k-128-finetuned-squad-seed-0,splinter,squadshifts_nyt,78.85387966978458,0.6985853004715636,0.7299583543210559,fewshot
-splinter-large-few-shot-k-128-finetuned-squad-seed-0,splinter,squadshifts_amazon,68.1242246547626,0.7845329654423381,0.7587886149258907,fewshot
-splinter-large-few-shot-k-128-finetuned-squad-seed-0,splinter,squadshifts_reddit,68.57143796750866,0.8074016510016264,0.8358022253763977,fewshot
 splinter-large-few-shot-k-128-finetuned-squad-seed-2,splinter,squad,81.22350132956208,0.6761717129172666,0.6103138313057599,fewshot
 splinter-large-few-shot-k-128-finetuned-squad-seed-2,splinter,squadshifts_nyt,79.38578328275524,0.6599308459051088,0.6475140477668191,fewshot
 splinter-large-few-shot-k-128-finetuned-squad-seed-2,splinter,squadshifts_amazon,68.73721780430664,0.7402395688152268,0.7890689758343399,fewshot
