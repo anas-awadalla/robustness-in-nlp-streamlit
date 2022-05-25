@@ -246,3 +246,6 @@ splinter-large-few-shot-k-64-finetuned-squad-seed-2,False,340,False
 splinter-large-few-shot-k-64-finetuned-squad-seed-4,False,340,False
 splinter-large-finetuned-squad,False,340,False
 t5-base-finetuned,False,220,False
+gpt2-xl-1-shot-seed-0,False,1500,False
+gpt2-xl-4-shot-seed-0,False,1500,False
+opt-1.3b-16-shot-seed-0,False,1300,False
