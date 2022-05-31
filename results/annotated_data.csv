@@ -249,3 +249,17 @@ t5-base-finetuned,False,220,False
 gpt2-xl-1-shot-seed-0,False,1500,False
 gpt2-xl-4-shot-seed-0,False,1500,False
 opt-1.3b-16-shot-seed-0,False,1300,False
+gpt2-large-1-shot-seed-0,False,774,False
+gpt2-large-1-shot-seed-2,False,774,False
+gpt2-large-1-shot-seed-4,False,774,False
+gpt2-large-4-shot-seed-0,False,774,False
+gpt2-large-4-shot-seed-2,False,774,False
+gpt2-large-4-shot-seed-4,False,774,False
+gpt2-xl-1-shot-seed-2,False,1500,False
+gpt2-xl-4-shot-seed-2,False,1500,False
+gpt2-xl-4-shot-seed-4,False,1500,False
+opt-1.3b-1-shot-seed-2,False,1300,False
+opt-1.3b-1-shot-seed-4,False,1300,False
+opt-1.3b-16-shot-seed-2,False,1300,False
+opt-1.3b-16-shot-seed-4,False,1300,False
+opt-1.3b-4-shot-seed-4,False,1300,False
