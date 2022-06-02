@@ -11,6 +11,8 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import scipy
 import random
+import statsmodels.api as sm
+from scipy import stats
 
 st.set_page_config(
     page_title="QA Robustness",
@@ -246,6 +248,22 @@ if not hide_finetuned and not is_filtered:
     finetuned_df = dataset_df[dataset_df["type"] == "finetuned"]
     if len(finetuned_df) != 0:
         # Add trendline for finetuned models
+        # reg_X = finetuned_df["iid_f1_transformed"]
+        # reg_y = finetuned_df["ood_f1_transformed"]
+        
+        # slope, intercept, r_value, p_value, std_err = stats.linregress(reg_X, reg_y)
+        # std_err = std_err * 1.96
+        # line_text = f"y = {round(slope, 2)}x + {round(intercept, 2)}"
+        # predicated_y = [slope * x + intercept for x in finetuned_df["iid_f1_transformed"]]
+        # trendline = go.Scatter(x=finetuned_df["iid_f1_transformed"], y=predicated_y, mode='lines', name="Finetuned Models")
+        # fig.add_trace(trendline)
+        # # Add confidence interval
+        # lower_bound = [x - std_err for x in predicated_y]
+        # upper_bound = [x + std_err for x in predicated_y]
+        # fig.add_trace(go.Scatter(x=finetuned_df["iid_f1_transformed"], y=lower_bound, mode='lines', name="Lower Bound"))
+        # fig.add_trace(go.Scatter(x=finetuned_df["iid_f1_transformed"], y=upper_bound, mode='lines', name="Upper Bound"))
+
+       
         z = np.polyfit(finetuned_df['iid_f1_transformed'],
                         finetuned_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(finetuned_df['iid_f1_transformed'])
@@ -329,6 +347,13 @@ if is_filtered:
 
 # Plot y=x line using tick values
 fig.add_trace(go.Line(x=transform(tick_loc_y), y=transform(tick_loc_y), mode='lines', name='y=x', line_dash="dash", line_color="blue",hoverinfo='none'))
+# Set plotly background color to transparent
+fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+# Set plotly grid lines to grey
+fig.update_xaxes(gridcolor='#CCCCCC', zerolinecolor='#CCCCCC', zerolinewidth=1)
+fig.update_yaxes(gridcolor='#CCCCCC', zerolinecolor='#CCCCCC', zerolinewidth=1)
+
+fig.update_layout(font=dict(size=16))
 
 st.plotly_chart(fig, use_container_width=True)
 
