@@ -11,8 +11,6 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import scipy
 import random
-import statsmodels.api as sm
-from scipy import stats
 
 st.set_page_config(
     page_title="QA Robustness",
