@@ -48,7 +48,7 @@ dataset_to_size = {
     'BioASQ': 1504,
     'RelationExtraction': 2948,
     'NewsQA': 4212,
-#     'DuoRC.ParaphraseRC': 1501,
+    'DuoRC.ParaphraseRC': 1501,
     'TriviaQA-web': 7785,
     'SearchQA': 16980,
     'HotpotQA': 5904,
@@ -65,14 +65,8 @@ id_dataset = st.sidebar.selectbox(
     'Dataset (X-Axis)',
     list(dataset_to_size.keys()))
 
-# if dataset == "DuoRC.ParaphraseRC":
-#     pandas_dataset = "DuoRC(ParaphraseRC)"
-# else:
-pandas_dataset = dataset
 
-# if id_dataset == "DuoRC.ParaphraseRC":
-#     pandas_id_dataset = "DuoRC(ParaphraseRC)"
-# else:
+pandas_dataset = dataset
 pandas_id_dataset = id_dataset
 
 scaling = st.sidebar.selectbox("Graph Scaling", ['Linear', 'Logit', 'Probit'])
@@ -81,12 +75,11 @@ color_by_dataset = st.sidebar.checkbox("Color by Pretraining Dataset", value=Fal
 results_path = Path(".") / "results"
 
 df = pd.read_csv(os.path.join(results_path.absolute(),
-                 'extractive_question_answering.csv'))
+                 'extractive_question_answering_new.csv'))
 df_annotated = pd.read_csv(os.path.join(results_path.absolute(),"annotated_data.csv"))
 
 # join df and df_annotated by model_name
 df = df.merge(df_annotated, on='model_name')
-df = df.assign(alpha=1.0)
 
 original_df = df.copy()
 
@@ -166,7 +159,7 @@ else:
     
 iid_df = df.loc[df['dataset'] == pandas_id_dataset.lower()].drop(columns=['dataset'])
 
-ood_df = ood_df.drop(columns=['type', 'model_family', 'model_size', 'is_robust', 'is_adapter', 'alpha'], errors='ignore')
+ood_df = ood_df.drop(columns=['type', 'model_family', 'model_size', 'is_robust', 'is_adapter'], errors='ignore')
 iid_df = iid_df.rename(columns={"f1": "iid_f1"})
 iid_df = iid_df.rename(columns={"f1_lower": "iid_f1_lower"})
 iid_df = iid_df.rename(columns={"f1_upper": "iid_f1_upper"})
@@ -192,16 +185,18 @@ if hide_icl:
 def transform(f1, scaling=scaling):
     if type(f1) is list:
         f1 = np.array(f1)
+    # divide by 100 to get the percentage
+    f1 = f1 / 100
     if scaling == 'Linear':
-        return (f1 / 100.0)
+        return f1
     elif scaling == 'Probit':
-        return scipy.stats.norm.ppf(f1 / 100.0)
+        return scipy.stats.norm.ppf(f1)
     elif scaling == 'Logit':
-        return np.log(np.divide(f1 / 100.0, 1.0 - f1 / 100.0))
+        return np.log(np.divide(f1, 1.0 - f1))
     
 # Get x axis range
-yrange = [0, 105]
-xrange = [0, 105]
+yrange = [0, 110]
+xrange = [0, 110]
 
 dataset_df['iid_f1_transformed'] = transform(dataset_df['iid_f1'], scaling=scaling)
 dataset_df['ood_f1_transformed'] = transform(dataset_df['ood_f1'], scaling=scaling)
@@ -224,17 +219,18 @@ dataset_df['pretrain_dataset'] = dataset_df['model_family'].apply(lambda x: data
 hover_data = {"iid_f1": True, "ood_f1": True, "type": True, "model_family": True, "pretrain_dataset": True, "iid_f1_transformed": False, "ood_f1_transformed": False}
 if scaling == 'Linear':
     # plot scatter by model family
-    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name", hover_data=hover_data, error_x="iid_f1_upper", error_x_minus="iid_f1_lower", error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.8 if not is_filtered else 0.1)
+    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name", hover_data=hover_data, error_x="iid_f1_upper", error_x_minus="iid_f1_lower", error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.5 if is_filtered else 0.8, symbol="type")
 else:
-    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name", hover_data=hover_data, title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.8 if not is_filtered else 0.1)
+    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "model_family", hover_name="model_name", hover_data=hover_data, title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.5 if is_filtered else 0.8, symbol="type")
 
 
-tick_loc_x = [round(z) for z in np.arange(xrange[0], xrange[1], 5)]
+
+tick_loc_x = [round(z) for z in np.arange(xrange[0], xrange[1], 10)]
 
 # set x axis ticks
 fig.update_xaxes(tickmode='array', tickvals=transform(tick_loc_x, scaling=scaling), ticktext=[str(z) for z in tick_loc_x])
 
-tick_loc_y = [round(z) for z in np.arange(yrange[0], yrange[1], 5)]
+tick_loc_y = [round(z) for z in np.arange(yrange[0], yrange[1], 10)]
 
 # set y axis ticks
 fig.update_yaxes(tickmode='array', tickvals=transform(tick_loc_y, scaling=scaling), ticktext=[str(z) for z in tick_loc_y])
@@ -242,78 +238,118 @@ fig.update_yaxes(tickmode='array', tickvals=transform(tick_loc_y, scaling=scalin
 # turn off autoscale
 fig.update_layout(autosize=False)
 
+@st.cache()
+def bootstrap_ci(df, n=1000):
+    # A function to calculate the confidence interval for a linear regression model using bootstrap
+    # x: independent variable
+    # y: dependent variable
+    # n: number of bootstrap samples
+    # returns: mean of bootstrap
+    preds = []
+    for _ in range(n):
+        bootstrap_df = df.sample(frac=1, replace=True)
+        # Add a trendline with confidence intervals using bootstrap
+        z = np.polyfit(bootstrap_df['iid_f1_transformed'],
+                        bootstrap_df['ood_f1_transformed'], 1)
+        y_fit = np.poly1d(z)(df['iid_f1_transformed'])
+        preds.append(y_fit)
+
+    return np.array(preds).mean(axis=0), preds
+    
+    
 if not hide_finetuned and not is_filtered:
     finetuned_df = dataset_df[dataset_df["type"] == "finetuned"]
+    # sort by iid_f1_transformed
+    finetuned_df.sort_values(by=['iid_f1_transformed'], inplace=True)
+    
     if len(finetuned_df) != 0:
-        # Add trendline for finetuned models
-        # reg_X = finetuned_df["iid_f1_transformed"]
-        # reg_y = finetuned_df["ood_f1_transformed"]
+        mean, preds = bootstrap_ci(finetuned_df)
         
-        # slope, intercept, r_value, p_value, std_err = stats.linregress(reg_X, reg_y)
-        # std_err = std_err * 1.96
-        # line_text = f"y = {round(slope, 2)}x + {round(intercept, 2)}"
-        # predicated_y = [slope * x + intercept for x in finetuned_df["iid_f1_transformed"]]
-        # trendline = go.Scatter(x=finetuned_df["iid_f1_transformed"], y=predicated_y, mode='lines', name="Finetuned Models")
-        # fig.add_trace(trendline)
-        # # Add confidence interval
-        # lower_bound = [x - std_err for x in predicated_y]
-        # upper_bound = [x + std_err for x in predicated_y]
-        # fig.add_trace(go.Scatter(x=finetuned_df["iid_f1_transformed"], y=lower_bound, mode='lines', name="Lower Bound"))
-        # fig.add_trace(go.Scatter(x=finetuned_df["iid_f1_transformed"], y=upper_bound, mode='lines', name="Upper Bound"))
+        z = np.polyfit(finetuned_df["iid_f1_transformed"], finetuned_df["ood_f1_transformed"], 1)
+        y_fit = np.poly1d(z)(finetuned_df["iid_f1_transformed"])
+        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(finetuned_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        fig.add_traces(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
+        
+        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        
+        # Add a shaded region for the confidence interval the same fill color as the line
+        fig.add_trace(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        fig.add_trace(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
-       
-        z = np.polyfit(finetuned_df['iid_f1_transformed'],
-                        finetuned_df['ood_f1_transformed'], 1)
-        y_fit = np.poly1d(z)(finetuned_df['iid_f1_transformed'])
-
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(finetuned_df['ood_f1_transformed'] ,y_fit):0.3f}"
-        fig.add_traces(go.Scatter(x=finetuned_df
-                        ['iid_f1_transformed'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
-
+        
 if not hide_zero_shot and not is_filtered:
     zeroshot_df = dataset_df[dataset_df["type"] == "zeroshot"]
+    # sort by iid_f1_transformed
+    zeroshot_df.sort_values(by=['iid_f1_transformed'], inplace=True)
     if len(zeroshot_df) != 0:
+        mean, preds = bootstrap_ci(zeroshot_df)
         # Add trendline for zero-shot models
         z = np.polyfit(zeroshot_df['iid_f1_transformed'],
                         zeroshot_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(zeroshot_df['iid_f1_transformed'])
-
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(zeroshot_df['ood_f1_transformed'] ,y_fit):0.3f}"
+        
+        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(zeroshot_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=zeroshot_df
                         ['iid_f1_transformed'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
+        
+        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        
+        fig.add_trace(go.Scatter(x=zeroshot_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        fig.add_trace(go.Scatter(x=zeroshot_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
 if not hide_few_shot and not is_filtered:
     fewshot_df = dataset_df[dataset_df["type"] == "fewshot"]
+    # sort by iid_f1_transformed
+    fewshot_df.sort_values(by=['iid_f1_transformed'], inplace=True)
     if len(fewshot_df) != 0:
+        mean, preds = bootstrap_ci(fewshot_df)
         # Add trendline for few-shot models
         z = np.polyfit(fewshot_df['iid_f1_transformed'],
                         fewshot_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(fewshot_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(fewshot_df['ood_f1_transformed'] ,y_fit):0.3f}"
+        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(fewshot_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=fewshot_df
                         ['iid_f1_transformed'], y=y_fit, name='Few-Shot Fit:'+line_equation, mode='lines'))
+        
+        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        
+        fig.add_trace(go.Scatter(x=fewshot_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        fig.add_trace(go.Scatter(x=fewshot_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
 if not hide_icl and not is_filtered:
     icl_df = dataset_df[dataset_df["type"] == "icl"]
+    # sort by iid_f1_transformed
+    icl_df.sort_values(by=['iid_f1_transformed'], inplace=True)
     if len(icl_df) != 0:
+        mean, preds = bootstrap_ci(icl_df)
         # Add trendline for icl models
         z = np.polyfit(icl_df['iid_f1_transformed'],
                         icl_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(icl_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(icl_df['ood_f1_transformed'] ,y_fit):0.3f}"
+        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(icl_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=icl_df
                         ['iid_f1_transformed'], y=y_fit, name='ICL Fit:'+line_equation, mode='lines'))
+        
+        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        
+        fig.add_trace(go.Scatter(x=icl_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        fig.add_trace(go.Scatter(x=icl_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+        
 
 if is_filtered:
     query_df = dataset_df.copy()
     if filter_model_types:
         query_df = dataset_df[dataset_df["model_family"].isin(filter_model_types)]
-    
+
     if filter_finetune_types:
         query_df = query_df[query_df["type"].isin(filter_finetune_types)]
-    
+
     if "Adapters" in filter_enhance_types:
         query_df = query_df.loc[query_df['is_adapter'] == True]
 
@@ -321,39 +357,79 @@ if is_filtered:
     if "Robustness" in filter_enhance_types:
         query_df = query_df.loc[query_df['is_robust'] == True]
         
+    # sort by iid_f1_transformed
+    query_df.sort_values(by=['iid_f1_transformed'], inplace=True)
+
     if len(query_df) != 0:
+        mean, preds = bootstrap_ci(query_df)
         # Add trendline for icl models
         z = np.polyfit(query_df['iid_f1_transformed'],
                         query_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(query_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(query_df['ood_f1_transformed'] ,y_fit):0.3f}"
-        fig.add_traces(go.Scatter(x=query_df
-                        ['iid_f1_transformed'], y=y_fit, name=f'{query_name if query_name else "Query"} Fit:'+line_equation, mode='lines'))
-    
+        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(query_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        fig.add_traces(go.Scatter(x=query_df['iid_f1_transformed'], y=y_fit, name=f"{query_name or 'Query'} Fit:" + line_equation, mode='lines'))
+
+        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        
+        fig.add_trace(go.Scatter(x=query_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        fig.add_trace(go.Scatter(x=query_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+
     # Plot all other models
     if len(dataset_df) != 0:
+        dataset_df.sort_values(by=['iid_f1_transformed'], inplace=True)
+        mean, preds = bootstrap_ci(dataset_df)
         # Add trendline for icl models
         z = np.polyfit(dataset_df['iid_f1_transformed'],
                         dataset_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(dataset_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.3f}x{z[1]:+0.3f} -- R^2 = {r2_score(dataset_df['ood_f1_transformed'] ,y_fit):0.3f}"
+        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(dataset_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=dataset_df
                         ['iid_f1_transformed'], y=y_fit, name='All Models Fit:'+line_equation, mode='lines'))
-    
+        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        fig.add_trace(go.Scatter(x=dataset_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        fig.add_trace(go.Scatter(x=dataset_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+
 
 # Plot y=x line using tick values
 fig.add_trace(go.Line(x=transform(tick_loc_y), y=transform(tick_loc_y), mode='lines', name='y=x', line_dash="dash", line_color="blue",hoverinfo='none'))
 # Set plotly background color to transparent
 fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-# Set plotly grid lines to grey
-fig.update_xaxes(gridcolor='#CCCCCC', zerolinecolor='#CCCCCC', zerolinewidth=1)
-fig.update_yaxes(gridcolor='#CCCCCC', zerolinecolor='#CCCCCC', zerolinewidth=1)
+# Set plotly grid lines to light grey
+fig.update_xaxes(gridcolor='lightgrey', zerolinecolor='lightgrey', zerolinewidth=1)
+fig.update_yaxes(gridcolor='lightgrey', zerolinecolor='lightgrey', zerolinewidth=1)
 
-fig.update_layout(font=dict(size=16))
+# set title only font size
+fig.update_layout(font=dict(size=12))
+fig.update_layout(title_font=dict(size=20))
+fig.update_traces(marker=dict(size=12))
+# make lines thicker
+fig.update_traces(line=dict(width=4))
+# Set plotly title to center
+fig.update_layout(title_x=0.5)
 
+# have a bounding box around the plot
+fig.update_layout(margin=dict(l=100, r=100, b=100, t=100))
+# set background color to white
+fig.update_layout(paper_bgcolor='rgba(255,255,255,0)')
 st.plotly_chart(fig, use_container_width=True)
+
+fig.update_layout(height=1080, width=1920)
+fig.update_layout(font=dict(size=24))
+fig.update_layout(title_font=dict(size=32))
+fig.update_traces(marker=dict(size=24))
+# set background color to transparent
+fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+fig.write_image("plot.pdf")
+
+with open("plot.pdf", "rb") as pdf:
+    download_btn = st.download_button("Download Plot",
+             data=pdf,
+             file_name="plot.pdf",
+             mime="pdf")
 
 # remove transformed f1 cols
 dataset_df.drop(["iid_f1_transformed", "ood_f1_transformed"], axis=1, inplace=True)
