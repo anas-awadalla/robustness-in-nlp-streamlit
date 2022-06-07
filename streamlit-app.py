@@ -223,7 +223,8 @@ if scaling == 'Linear':
 else:
     fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "type", hover_name="model_name", hover_data=hover_data, title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.5 if is_filtered else 0.8, symbol="type")
 
-
+# Rename legend title
+fig.update_layout(legend_title_text="Pretraining Dataset" if color_by_dataset else "Adaptation Type")
 
 tick_loc_x = [round(z) for z in np.arange(xrange[0], xrange[1], 10)]
 
