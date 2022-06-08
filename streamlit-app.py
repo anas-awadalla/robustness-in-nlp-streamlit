@@ -268,8 +268,8 @@ if not hide_finetuned and not is_filtered:
         
         z = np.polyfit(finetuned_df["iid_f1_transformed"], finetuned_df["ood_f1_transformed"], 1)
         y_fit = np.poly1d(z)(finetuned_df["iid_f1_transformed"])
-        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(finetuned_df['ood_f1_transformed'] ,y_fit):0.2f}"
-        fig.add_traces(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=y_fit, name='Fine-Tuned Fit:'+line_equation, mode='lines'))
+        # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(finetuned_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        fig.add_traces(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=y_fit, name='Fine-Tuned Fit', mode='lines'))
         
         lower_bound = mean-(2*np.std(np.array(preds),axis=0))
         upper_bound = mean+(2*np.std(np.array(preds),axis=0))
@@ -290,9 +290,9 @@ if not hide_zero_shot and not is_filtered:
                         zeroshot_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(zeroshot_df['iid_f1_transformed'])
         
-        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(zeroshot_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(zeroshot_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=zeroshot_df
-                        ['iid_f1_transformed'], y=y_fit, name='Zero-Shot Fit:'+line_equation, mode='lines'))
+                        ['iid_f1_transformed'], y=y_fit, name='Zero-Shot Fit', mode='lines'))
         
         lower_bound = mean-(2*np.std(np.array(preds),axis=0))
         upper_bound = mean+(2*np.std(np.array(preds),axis=0))
@@ -311,9 +311,9 @@ if not hide_few_shot and not is_filtered:
                         fewshot_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(fewshot_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(fewshot_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(fewshot_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=fewshot_df
-                        ['iid_f1_transformed'], y=y_fit, name='Few-Shot Fit:'+line_equation, mode='lines'))
+                        ['iid_f1_transformed'], y=y_fit, name='Few-Shot Fit', mode='lines'))
         
         lower_bound = mean-(2*np.std(np.array(preds),axis=0))
         upper_bound = mean+(2*np.std(np.array(preds),axis=0))
@@ -332,9 +332,9 @@ if not hide_icl and not is_filtered:
                         icl_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(icl_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(icl_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(icl_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=icl_df
-                        ['iid_f1_transformed'], y=y_fit, name='ICL Fit:'+line_equation, mode='lines'))
+                        ['iid_f1_transformed'], y=y_fit, name='ICL Fit', mode='lines'))
         
         lower_bound = mean-(2*np.std(np.array(preds),axis=0))
         upper_bound = mean+(2*np.std(np.array(preds),axis=0))
@@ -368,8 +368,8 @@ if is_filtered:
                         query_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(query_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(query_df['ood_f1_transformed'] ,y_fit):0.2f}"
-        fig.add_traces(go.Scatter(x=query_df['iid_f1_transformed'], y=y_fit, name=f"{query_name or 'Query'} Fit:" + line_equation, mode='lines'))
+        # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(query_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        fig.add_traces(go.Scatter(x=query_df['iid_f1_transformed'], y=y_fit, name=f"{query_name or 'Query'} Fit", mode='lines'))
 
         lower_bound = mean-(2*np.std(np.array(preds),axis=0))
         upper_bound = mean+(2*np.std(np.array(preds),axis=0))
@@ -386,9 +386,9 @@ if is_filtered:
                         dataset_df['ood_f1_transformed'], 1)
         y_fit = np.poly1d(z)(dataset_df['iid_f1_transformed'])
 
-        line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(dataset_df['ood_f1_transformed'] ,y_fit):0.2f}"
+        # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(dataset_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=dataset_df
-                        ['iid_f1_transformed'], y=y_fit, name='All Models Fit:'+line_equation, mode='lines'))
+                        ['iid_f1_transformed'], y=y_fit, name='All Models Fit', mode='lines'))
         lower_bound = mean-(2*np.std(np.array(preds),axis=0))
         upper_bound = mean+(2*np.std(np.array(preds),axis=0))
         fig.add_trace(go.Scatter(x=dataset_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
@@ -420,6 +420,10 @@ fig.update_layout(paper_bgcolor='rgba(255,255,255,0)')
 # Add boarder
 fig.update_xaxes(showline=True, linewidth=2, linecolor='black', mirror=True)
 fig.update_yaxes(showline=True, linewidth=2, linecolor='black', mirror=True)
+# Put legend in the top left corner of the plot as a two column table
+fig.update_layout(legend=dict( yanchor="top", y=0.99, xanchor="left",
+                              x=0.01, traceorder="normal", bgcolor="White",
+                              bordercolor="Black", borderwidth=0.5))
 
 st.plotly_chart(fig, use_container_width=True)
 
