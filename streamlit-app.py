@@ -412,6 +412,9 @@ fig.update_traces(line=dict(width=4))
 # Set plotly title to center
 fig.update_layout(title_x=0.5)
 
+# increase tick font size
+fig.update_layout(xaxis_tickfont_size=14, yaxis_tickfont_size=14)
+
 # have a bounding box around the plot
 fig.update_layout(margin=dict(l=100, r=100, b=100, t=100))
 # set background color to white
@@ -431,6 +434,7 @@ fig.update_layout(height=1080, width=1920)
 fig.update_layout(font=dict(size=24))
 fig.update_layout(title_font=dict(size=32))
 fig.update_traces(marker=dict(size=24))
+fig.update_layout(xaxis_tickfont_size=24, yaxis_tickfont_size=24)
 # set background color to transparent
 fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
 fig.write_image("plot.pdf")
