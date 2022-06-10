@@ -28,7 +28,7 @@ for model_name in tqdm(models):
 
     model_size = None
     while not model_size:
-        model_size = int(input('What is the model size of ' + model_name + ' in millions? '))
+        model_size = -1 # int(input('What is the model size of ' + model_name + ' in millions? '))
 
     # append the new row to the annotated data
     annotated_data = annotated_data.append({'model_name': model_name, 'is_adapter': is_adapter, 'model_size': model_size, 'is_robust': is_robust}, ignore_index=True)
