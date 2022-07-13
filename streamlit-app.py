@@ -217,12 +217,8 @@ dataset_map = {"bert": "bookcorpus+wikipedia", "bart": "bookcorpus+wikipedia", "
 dataset_df['pretrain_dataset'] = dataset_df['model_family'].apply(lambda x: dataset_map[x])
 
 hover_data = {"iid_f1": True, "ood_f1": True, "type": True, "model_family": True, "pretrain_dataset": True, "iid_f1_transformed": False, "ood_f1_transformed": False}
-if scaling == 'Linear':
-    # plot scatter by model family
-    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "type", hover_name="model_name", hover_data=hover_data, error_x="iid_f1_upper", error_x_minus="iid_f1_lower", error_y="ood_f1_upper", error_y_minus="ood_f1_lower", title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.8, symbol="type")
-else:
-    fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "type", hover_name="model_name", hover_data=hover_data, title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.8, symbol="type")
-
+# plot scatter by model family
+fig = px.scatter(dataset_df, x="iid_f1_transformed", y="ood_f1_transformed", color="pretrain_dataset" if color_by_dataset else "type", hover_name="model_name", hover_data=hover_data, title=f"Performance Comparison Between {pandas_id_dataset} and {'All Datasets' if average_all_datasets else pandas_dataset}", labels=dict(iid_f1_transformed=f"F1 Score Performance on {pandas_id_dataset}", ood_f1_transformed=f"F1 Score Performance on {'All Datasets' if average_all_datasets else pandas_dataset}"), opacity=0.8, symbol="type")
 # Rename legend title
 fig.update_layout(legend_title_text="Pretraining Dataset" if color_by_dataset else "Adaptation Type")
 
@@ -271,12 +267,12 @@ if not hide_finetuned and not is_filtered:
         # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(finetuned_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=y_fit, name='Fine-Tuned Fit', mode='lines'))
         
-        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
-        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        # lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        # upper_bound = mean+(2*np.std(np.array(preds),axis=0))
         
-        # Add a shaded region for the confidence interval the same fill color as the line
-        fig.add_trace(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
-        fig.add_trace(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+        # # Add a shaded region for the confidence interval the same fill color as the line
+        # fig.add_trace(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=finetuned_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
         
 if not hide_zero_shot and not is_filtered:
@@ -294,11 +290,11 @@ if not hide_zero_shot and not is_filtered:
         fig.add_traces(go.Scatter(x=zeroshot_df
                         ['iid_f1_transformed'], y=y_fit, name='Zero-Shot Fit', mode='lines'))
         
-        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
-        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        # lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        # upper_bound = mean+(2*np.std(np.array(preds),axis=0))
         
-        fig.add_trace(go.Scatter(x=zeroshot_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
-        fig.add_trace(go.Scatter(x=zeroshot_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=zeroshot_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=zeroshot_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
 if not hide_few_shot and not is_filtered:
     fewshot_df = dataset_df[dataset_df["type"] == "fewshot"]
@@ -315,11 +311,11 @@ if not hide_few_shot and not is_filtered:
         fig.add_traces(go.Scatter(x=fewshot_df
                         ['iid_f1_transformed'], y=y_fit, name='Few-Shot Fit', mode='lines'))
         
-        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
-        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        # lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        # upper_bound = mean+(2*np.std(np.array(preds),axis=0))
         
-        fig.add_trace(go.Scatter(x=fewshot_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
-        fig.add_trace(go.Scatter(x=fewshot_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=fewshot_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=fewshot_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
 if not hide_icl and not is_filtered:
     icl_df = dataset_df[dataset_df["type"] == "icl"]
@@ -336,11 +332,11 @@ if not hide_icl and not is_filtered:
         fig.add_traces(go.Scatter(x=icl_df
                         ['iid_f1_transformed'], y=y_fit, name='ICL Fit', mode='lines'))
         
-        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
-        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        # lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        # upper_bound = mean+(2*np.std(np.array(preds),axis=0))
         
-        fig.add_trace(go.Scatter(x=icl_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
-        fig.add_trace(go.Scatter(x=icl_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=icl_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=icl_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
         
 
 if is_filtered:
@@ -371,11 +367,11 @@ if is_filtered:
         # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(query_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=query_df['iid_f1_transformed'], y=y_fit, name=f"{query_name or 'Query'} Fit", mode='lines'))
 
-        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
-        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        # lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        # upper_bound = mean+(2*np.std(np.array(preds),axis=0))
         
-        fig.add_trace(go.Scatter(x=query_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
-        fig.add_trace(go.Scatter(x=query_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=query_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=query_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
     # Plot all other models
     if len(dataset_df) != 0:
@@ -389,10 +385,11 @@ if is_filtered:
         # line_equation = f" y={z[0]:0.2f}x{z[1]:+0.2f} -- R^2 = {r2_score(dataset_df['ood_f1_transformed'] ,y_fit):0.2f}"
         fig.add_traces(go.Scatter(x=dataset_df
                         ['iid_f1_transformed'], y=y_fit, name='All Models Fit', mode='lines'))
-        lower_bound = mean-(2*np.std(np.array(preds),axis=0))
-        upper_bound = mean+(2*np.std(np.array(preds),axis=0))
-        fig.add_trace(go.Scatter(x=dataset_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
-        fig.add_trace(go.Scatter(x=dataset_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
+        
+        # lower_bound = mean-(2*np.std(np.array(preds),axis=0))
+        # upper_bound = mean+(2*np.std(np.array(preds),axis=0))
+        # fig.add_trace(go.Scatter(x=dataset_df['iid_f1_transformed'], y=lower_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', line_color='rgba(0,0,0,0)', showlegend=False))
+        # fig.add_trace(go.Scatter(x=dataset_df['iid_f1_transformed'], y=upper_bound, mode='lines', fillcolor='rgba(0,0,0,0.2)', fill='tonexty', line_color='rgba(0,0,0,0)', showlegend=False))
 
 
 # Plot y=x line using tick values
