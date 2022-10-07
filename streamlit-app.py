@@ -226,6 +226,6 @@ else:
     st.pyplot(fig, use_container_width=True)
     # save figure to file
 
-file_name = st.text_input("Save figure as", plot_config.title)
-if st.button("Save Plot") and not plot_config.plotly:
-    fig.savefig(f"images/{file_name}.pdf")
+# file_name = st.text_input("Save figure as", plot_config.title)
+# if st.button("Save Plot") and not plot_config.plotly:
+#     fig.savefig(f"images/{file_name}.pdf")
