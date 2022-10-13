@@ -63,7 +63,7 @@ class Plotter:
             # add y=x baseline based on the lowest ticks
             ax.plot(x_ticks if x_ticks[-1] < y_ticks[-1] else y_ticks, x_ticks if x_ticks[-1] < y_ticks[-1] else y_ticks, color='black', linestyle="dashed", linewidth=2, label="y=x")
 
-            # add trendlines for each group in config.group_by
+            # add trendlines for each group in config.group_by  
             for group in sorted(df[config.group_by].unique()):
                 # get the data for this group
                 group_data = df[df[config.group_by] == group]
@@ -77,6 +77,9 @@ class Plotter:
             ax.set_axisbelow(True)
             if config.show_legend:
                 ax.legend(loc='upper left', title=config.legend_title, fontsize="small")
+            
+                # handles, labels = plt.gca().get_legend_handles_labels()
+                # plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order], fontsize="small")
         
             return fig
 

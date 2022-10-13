@@ -1,7 +1,16 @@
 # load extractive_question_answering.csv and check if there are some model_name entries missing datasets
 import pandas as pd
 
-df = pd.read_csv('results/extractive_question_answering_new.csv')
+df = pd.read_csv('results/extractive_question_answering_final.csv')
+
+# for rows that have model_family gpt and type finetuned change type to prompt finetuned and save csv
+
+# for index, row in df.iterrows():
+#     if row['model_family'] == 'gpt-neo' and row['type'] == 'finetuned':
+#         df.at[index, 'type'] = 'prompt finetuned'
+
+# # save the new csv
+# df.to_csv('results/extractive_question_answering_new.csv', index=False)
 
 # Create a missing.csv file that contains the missing model_name entries and the corresponding dataset
 

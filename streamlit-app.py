@@ -17,9 +17,18 @@ from plotter import Plotter, Scaling, config
 from utils import *
 
 st.set_page_config(
-    page_title="QA Robustness",
-    layout="wide",
+    page_title="QA Robustness"
 )
+
+# st.bar_chart({"data": [1, 5, 2, 6, 2, 1]})
+
+# with st.expander("See explanation"):
+#     st.write("""
+#         The chart above shows some numbers I picked for you.
+#         I rolled actual dice for these, so they're *guaranteed* to
+#         be random.
+#     """)
+#     st.image("https://static.streamlit.io/examples/dice.jpg")
 
 testsets = ["squad",
             "squadshifts_nyt",
@@ -46,13 +55,13 @@ scaling = st.sidebar.selectbox(
 use_plotly = st.sidebar.selectbox(
     "Plotting Framework", ["Plotly", "Matplotlib"], disabled=False) == "Plotly"
 
-show_only_baseline = st.sidebar.checkbox("Show Only Baseline", value=False)
+show_only_baseline = False #st.sidebar.checkbox("Show Only Baseline", value=False, disabled=True)
 group_by_finetuned = st.sidebar.checkbox("Group By Finetuned", value=True, disabled=True)
 
 results_path = Path(".") / "results"
 
 df = pd.read_csv(os.path.join(results_path.absolute(),
-                 'extractive_question_answering_new.csv'))
+                 'extractive_question_answering_final_avg.csv'))
 
 larger_family_to_model = {"Encoder Model": ["bert", "albert", "roberta", "spanbert", "splinter", "distilbert"], "Decoder Model": ["gpt", "opt", "gpt-neo", "gpt-j"], "Encoder-Decoder Model": ["bart", "t5"]}
 
@@ -70,15 +79,17 @@ df = df.merge(df_annotated, on='model_name')
 
 df = df[~df['model_name'].str.contains('wise')]
 
-df['type'] = df['type'].apply(lambda x: x.replace('prompt finetuned', 'Prompt Fine-tuned').replace('finetuned', 'Fine-tuned' if group_by_finetuned else 'Baseline (Fine-tuned)').replace(
+df['type'] = df['type'].apply(lambda x: x.replace('prompt finetuned', 'Prompt Fine-tuned (PT)').replace('finetuned', 'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned)').replace(
     'zeroshot', 'Zero-shot').replace('fewshot', 'Few-shot').replace('icl', 'In-Context Learning'))
 
 # if model_family contains gpt and type is Few-shot then rename type to Few-shot Seq2Seq
 for index, row in df.iterrows():
-    if ((('gpt' in row['model_family'] or 'opt' in row['model_family']) and 'span-head' not in row['model_name']) or ('bart' in row['model_family'] and 'seq2seq' in row['model_name'])) and row['type'] == 'Few-shot':
-        df.at[index, 'type'] = 'Few-shot Seq2Seq'
+    if ((('gpt' in row['model_family'] or 'opt' in row['model_family']) and 'span-head' not in row['model_name']) or ('bart' in row['model_family'] and 'mask-fill' in row['model_name']) or ('t5' in row['model_family'] and 'mask-fill' in row['model_name'])) and row['type'] == 'Few-shot':
+        df.at[index, 'type'] = 'Few-shot PT (Alligned)'
+    elif (('bart' in row['model_family'] and 'seq2seq' in row['model_name']) or ('t5' in row['model_family'] and 'seq2seq' in row['model_name'])) and row['type'] == 'Few-shot':
+        df.at[index, 'type'] = 'Few-shot PT (Unalligned)'
     elif row['type'] == 'Few-shot':
-        df.at[index, 'type'] = 'Few-shot Span Prediction'
+        df.at[index, 'type'] = 'Few-shot FT'
     elif row['type'] == 'Baseline (Fine-tuned)' and row["is_adapter"]:
         df.at[index, 'type'] = 'Parameter Efficient'
         # if 'prefix' in row['model_name']:
@@ -95,8 +106,9 @@ for index, row in df.iterrows():
 if st.sidebar.checkbox("Hide Zero Shot Models", value=False):
     df = df[df['type'] != 'Zero-shot']
 if st.sidebar.checkbox("Hide Few Shot Models", value=False):
-    df = df[df['type'] != 'Few-shot Span Prediction']
-    df = df[df['type'] != 'Few-shot Seq2Seq']
+    df = df[df['type'] != 'Few-shot FT']
+    df = df[df['type'] != 'Few-shot PT (Alligned)']
+    df = df[df['type'] != 'Few-shot PT (Unalligned)']
 if st.sidebar.checkbox("Hide In Context Learning Models", value=False):
     df = df[df['type'] != 'In-Context Learning']
 if st.sidebar.checkbox("Hide Parameter Efficient Models", value=False, disabled=True):
@@ -150,31 +162,34 @@ ood_df = ood_df.rename(
 dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
     'model_name')], axis=1, join='inner').reset_index()
 
-color_map = {'Fine-tuned' if group_by_finetuned else 'Baseline (Fine-tuned)': 'rgba(230, 97, 0, 0.4)',
-             "Prompt Fine-tuned": 'rgba(246,190,0, 0.5)',
-             'Few-shot Span Prediction': 'rgba(26, 133, 255, 0.4)',
-             'Few-shot Seq2Seq': 'rgba(64, 176, 166, 0.4)',
+color_map = {'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned)': 'rgba(230, 97, 0, 0.4)',
+             "Prompt Fine-tuned (PT)": 'rgba(246,190,0, 0.5)',
+             'Few-shot FT': 'rgba(26, 133, 255, 0.4)',
+             'Few-shot PT (Alligned)': 'rgba(64, 176, 166, 0.4)',
+             'Few-shot PT (Unalligned)': 'rgba(0, 0, 0, 0.4)',
              'Zero-shot': 'rgba(75, 0, 146, 0.4)',
              'In-Context Learning': 'rgba(212, 17, 89, 0.4)',
              'Robustness Enhanced': 'rgba(0, 0, 0, 0.4)',
              'Parameter Efficient': 'rgba(128,128,0, 0.4)'}
 
-color_map_mpl = {'Fine-tuned' if group_by_finetuned else 'Baseline (Fine-tuned)': 'darkorange',
-                 'Prompt Fine-tuned': 'gold',
-                 'Few-shot Span Prediction': 'royalblue',
-                 'Few-shot Seq2Seq': 'teal',
+color_map_mpl = {'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned)': 'darkorange',
+                 'Prompt Fine-tuned (PT)': 'gold',
+                 'Few-shot FT': 'royalblue',
+                 'Few-shot PT (Alligned)': 'teal',
+                 'Few-shot PT (Unalligned)': 'black',
                  'Zero-shot': 'darkviolet',
                  'In-Context Learning': 'crimson',
                  'Robustness Enhanced': 'black',
                  'Parameter Efficient': 'darkgreen'}
 
 
-symbol_map = {'Fine-tuned' if group_by_finetuned else 'Baseline (Fine-tuned)': "o",
-              "Prompt Fine-tuned": "^",
+symbol_map = {'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned)': "o",
+              "Prompt Fine-tuned (PT)": "^",
               "Zero-shot": "D",
               "In-Context Learning": "P",
-              "Few-shot Seq2Seq": "X",
-              "Few-shot Span Prediction": "s",
+              "Few-shot PT (Alligned)": "X",
+              "Few-shot PT (Unalligned)": "X",
+              "Few-shot FT": "s",
               "Robustness Enhanced": "*",
               "Parameter Efficient": "d"}
 
@@ -182,21 +197,21 @@ symbol_map = {'Fine-tuned' if group_by_finetuned else 'Baseline (Fine-tuned)': "
 #               "Decoder Model": "D",
 #                "Encoder-Decoder Model": "P",
 #               "Few-shot Seq2Seq": "X",
-#               "Few-shot Span Prediction": "s",
+#               "Few-shot FT": "s",
 #               "Robustness Enhanced": "*",
 #               "Parameter Efficient": "d"}
 # color_map_mpl = {'Encoder Model': 'darkorange',
 #                     'Decoder Model': 'royalblue',
 #                     'Encoder-Decoder Model': 'darkviolet',
 #                     'Few-shot Seq2Seq': 'teal',
-#                     'Few-shot Span Prediction': 'teal',
+#                     'Few-shot FT': 'teal',
 #                     'Robustness Enhanced': 'black',
 #                     'Parameter Efficient': 'darkgreen'}
 # color_map = {'Encoder Model',
 #                     'Decoder Model': 'rgba(26, 133, 255, 0.4)',
 #                     'Encoder-Decoder Model': 'rgba(212, 17, 89, 0.4)',
 #                     'Few-shot Seq2Seq': 'rgba(64, 176, 166, 0.4)',
-#                     'Few-shot Span Prediction': 'rgba(26, 133, 255, 0.4)',
+#                     'Few-shot FT': 'rgba(26, 133, 255, 0.4)',
 #                     'Robustness Enhanced': 'rgba(0, 0, 0, 0.4)',
 #                     'Parameter Efficient': 'rgba(128,128,0, 0.4)'}
 

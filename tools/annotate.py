@@ -7,7 +7,7 @@ import pandas as pd
 from tqdm import tqdm
 import os
 
-data = pd.read_csv('results/extractive_question_answering_new.csv')
+data = pd.read_csv('results/extractive_question_answering_final_avg.csv')
 annotated_data = pd.read_csv('results/annotated_data.csv') if os.path.exists('results/annotated_data.csv') else pd.DataFrame(columns=['model_name', 'is_adapter', 'model_size', 'is_robust'])
 
 # Get unique model names minus the ones that are already annotated
