@@ -85,9 +85,9 @@ df['type'] = df['type'].apply(lambda x: x.replace('prompt finetuned', 'Prompt Fi
 # if model_family contains gpt and type is Few-shot then rename type to Few-shot Seq2Seq
 for index, row in df.iterrows():
     if ((('gpt' in row['model_family'] or 'opt' in row['model_family']) and 'span-head' not in row['model_name']) or ('bart' in row['model_family'] and 'mask-fill' in row['model_name']) or ('t5' in row['model_family'] and 'mask-fill' in row['model_name'])) and row['type'] == 'Few-shot':
-        df.at[index, 'type'] = 'Few-shot PT (Alligned)'
+        df.at[index, 'type'] = 'Few-shot PT (Aligned)'
     elif (('bart' in row['model_family'] and 'seq2seq' in row['model_name']) or ('t5' in row['model_family'] and 'seq2seq' in row['model_name'])) and row['type'] == 'Few-shot':
-        df.at[index, 'type'] = 'Few-shot PT (Unalligned)'
+        df.at[index, 'type'] = 'Few-shot PT (Unaligned)'
     elif row['type'] == 'Few-shot':
         df.at[index, 'type'] = 'Few-shot FT'
     elif row['type'] == 'Baseline (Fine-tuned)' and row["is_adapter"]:
@@ -107,8 +107,8 @@ if st.sidebar.checkbox("Hide Zero Shot Models", value=False):
     df = df[df['type'] != 'Zero-shot']
 if st.sidebar.checkbox("Hide Few Shot Models", value=False):
     df = df[df['type'] != 'Few-shot FT']
-    df = df[df['type'] != 'Few-shot PT (Alligned)']
-    df = df[df['type'] != 'Few-shot PT (Unalligned)']
+    df = df[df['type'] != 'Few-shot PT (Aligned)']
+    df = df[df['type'] != 'Few-shot PT (Unaligned)']
 if st.sidebar.checkbox("Hide In Context Learning Models", value=False):
     df = df[df['type'] != 'In-Context Learning']
 if st.sidebar.checkbox("Hide Parameter Efficient Models", value=False, disabled=True):
@@ -165,8 +165,8 @@ dataset_df = pd.concat([iid_df.set_index('model_name'), ood_df.set_index(
 color_map = {'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned)': 'rgba(230, 97, 0, 0.4)',
              "Prompt Fine-tuned (PT)": 'rgba(246,190,0, 0.5)',
              'Few-shot FT': 'rgba(26, 133, 255, 0.4)',
-             'Few-shot PT (Alligned)': 'rgba(64, 176, 166, 0.4)',
-             'Few-shot PT (Unalligned)': 'rgba(0, 0, 0, 0.4)',
+             'Few-shot PT (Aligned)': 'rgba(64, 176, 166, 0.4)',
+             'Few-shot PT (Unaligned)': 'rgba(0, 0, 0, 0.4)',
              'Zero-shot': 'rgba(75, 0, 146, 0.4)',
              'In-Context Learning': 'rgba(212, 17, 89, 0.4)',
              'Robustness Enhanced': 'rgba(0, 0, 0, 0.4)',
@@ -175,8 +175,8 @@ color_map = {'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned)
 color_map_mpl = {'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned)': 'darkorange',
                  'Prompt Fine-tuned (PT)': 'gold',
                  'Few-shot FT': 'royalblue',
-                 'Few-shot PT (Alligned)': 'teal',
-                 'Few-shot PT (Unalligned)': 'black',
+                 'Few-shot PT (Aligned)': 'teal',
+                 'Few-shot PT (Unaligned)': 'black',
                  'Zero-shot': 'darkviolet',
                  'In-Context Learning': 'crimson',
                  'Robustness Enhanced': 'black',
@@ -187,8 +187,8 @@ symbol_map = {'Fine-tuned (FT)' if group_by_finetuned else 'Baseline (Fine-tuned
               "Prompt Fine-tuned (PT)": "^",
               "Zero-shot": "D",
               "In-Context Learning": "P",
-              "Few-shot PT (Alligned)": "X",
-              "Few-shot PT (Unalligned)": "X",
+              "Few-shot PT (Aligned)": "X",
+              "Few-shot PT (Unaligned)": "X",
               "Few-shot FT": "s",
               "Robustness Enhanced": "*",
               "Parameter Efficient": "d"}
