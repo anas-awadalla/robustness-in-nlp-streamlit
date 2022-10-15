@@ -691,3 +691,13 @@ t5-base-few-shot-k-256-finetuned-squad-mask-fill-avg,False,-1,False
 t5-base-few-shot-k-32-finetuned-squad-mask-fill-avg,False,-1,False
 t5-base-few-shot-k-512-finetuned-squad-mask-fill-avg,False,-1,False
 t5-base-few-shot-k-64-finetuned-squad-mask-fill-avg,False,-1,False
+gpt-j-1-shot-avg,False,-1,False
+gpt-j-4-shot-avg,False,-1,False
+gpt2-large-1-shot-avg,False,-1,False
+gpt2-large-4-shot-avg,False,-1,False
+gpt2-xl-1-shot-avg,False,-1,False
+gpt2-xl-4-shot-avg,False,-1,False
+opt-1.3b-1-shot-avg,False,-1,False
+opt-1.3b-4-shot-avg,False,-1,False
+opt-175B-1-shot-avg,False,-1,False
+opt-175B-4-shot-avg,False,-1,False
