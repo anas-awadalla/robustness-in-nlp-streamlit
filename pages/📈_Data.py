@@ -15,7 +15,6 @@ from sklearn.metrics import r2_score
 
 from plotter import Plotter, Scaling, config
 from utils import *
-from st_on_hover_tabs import on_hover_tabs
 
 st.set_page_config(
     page_title="Question Answering Robustness",
