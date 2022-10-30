@@ -53,7 +53,7 @@ id_dataset = st.sidebar.selectbox(
 scaling = st.sidebar.selectbox(
     "Graph Scaling", [Scaling.LINEAR, Scaling.PROBIT, Scaling.LOGIT], index=2)
 use_plotly = st.sidebar.selectbox(
-    "Plotting Framework", ["Plotly", "Matplotlib"], disabled=False) == "Plotly"
+    "Plotting Framework", ["Plotly", "Matplotlib"], disabled=True) == "Plotly"
 
 show_only_baseline = True #st.sidebar.checkbox("Show Only Baseline", value=False, disabled=True)
 
@@ -229,7 +229,7 @@ fig = Plotter.plot(dataset_df, plot_config)
 if plot_config.plotly:
     st.plotly_chart(fig, use_container_width=True)
 else:
-    st.pyplot(fig, use_container_width=True)
+    st.pyplot(fig)
     # save figure to file
     
 # seperate legend from plot and make sure it doesn't overlap with plot
