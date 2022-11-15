@@ -51,10 +51,10 @@ st.text("Please refer to our paper for more discussion on our findings.")
 
 st.markdown("### Citation")
 st.code("""
-        @article{awadalla2022exploring,
-        title={Exploring the Landscape of Distributional Robustness for Question Answering Models},
-        author={Awadalla, Anas and Wortsman, Mitchell and Ilharco, Gabriel and Min, Sewon and Magneusson, Ian and Hajishirzi, Hannaneh and Schmidt, Ludwig},
+        @article{Awadalla2022ExploringTL,
+        title={Exploring The Landscape of Distributional Robustness for Question Answering Models},
+        author={Anas Awadalla and Mitchell Wortsman and Gabriel Ilharco and Sewon Min and Ian H. Magnusson and Hannaneh Hajishirzi and Ludwig Schmidt},
         journal={EMNLP Findings 2022},
-        year={2022}
-        url={https://arxiv.org/abs/2210.12517}
+        year={2022},
+        volume={abs/2210.12517}
         }""", language="text")
