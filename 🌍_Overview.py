@@ -6,7 +6,7 @@ st.set_page_config(
 )
 
 st.markdown("## Exploring The Landscape of Distributional Robustness for Question Answering Model")
-st.markdown("[Anas Awadalla](anasawadalla.site), [Mitchell Wortsman](https://mitchellnw.github.io), [Gabriel Ilharco](https://gabrielilharco.com), [Sewon Min](https://shmsw25.github.io), [Ian Magneusson](https://www.linkedin.com/in/ian-magnusson), [Hannaneh Hajishirzi](https://homes.cs.washington.edu/~hannaneh/), [Ludwig Schmidt](https://people.csail.mit.edu/ludwigs/)")
+st.markdown("[Anas Awadalla](https://anasawadalla.site), [Mitchell Wortsman](https://mitchellnw.github.io), [Gabriel Ilharco](https://gabrielilharco.com), [Sewon Min](https://shmsw25.github.io), [Ian Magneusson](https://www.linkedin.com/in/ian-magnusson), [Hannaneh Hajishirzi](https://homes.cs.washington.edu/~hannaneh/), [Ludwig Schmidt](https://people.csail.mit.edu/ludwigs/)")
 
 links = '[📄 Paper](https://arxiv.org/abs/2210.12517) \ [👨🏽‍💻 Code](https://github.com/allenai/catwalk)'
 st.markdown(links)
