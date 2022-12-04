@@ -1,7 +1,7 @@
 streamlit
 numpy
 pandas
-plotly
+plotly==5.7.0
 sklearn
 matplotlib
 scipy
