@@ -2,7 +2,7 @@ streamlit==1.10.0
 numpy
 pandas
 plotly==5.7.0
-sklearn
+scikit-learn
 matplotlib
 scipy
 click==8
